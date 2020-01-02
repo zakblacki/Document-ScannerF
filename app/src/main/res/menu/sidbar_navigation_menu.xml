@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--other menu items-->
+
+<!--    app:showAsAction="never"-->
+
+    <item android:id="@+id/navHome"
+        android:title="@string/home"
+        android:icon="@drawable/home"/>
+    <item
+        android:id="@+id/action_scan"
+        android:title="@string/text_camera"
+        android:icon="@drawable/ic_action_scan"/>
+
+    <item
+        android:id="@+id/action_ocr"
+        android:title="@string/text_ocr"
+        android:icon="@drawable/ic_action_ocr"/>
+
+    <item android:id="@+id/action_mrz"
+        android:title="@string/text_mrz"
+        android:icon="@drawable/ic_perm_identity_white_24dp"  />
+
+
+    <item android:id="@+id/navFeedback"
+        android:title="@string/feedback"
+        android:icon="@drawable/feedback"/>
+
+
+
+</menu>

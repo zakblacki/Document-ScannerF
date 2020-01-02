@@ -1,0 +1,133 @@
+<resources>
+
+    <string name="app_name">CaptureDoc</string>
+
+    <string name="action_bar_title">CaptureDoc</string>
+
+    <string name="capturedoc">CaptureDoc</string>
+
+    <string name="text_scan">Scan</string>
+    <string name="text_camera">Manual Crop</string>
+    <string name="text_gallery">Gallery</string>
+    <string name="text_ocr">OCR</string>
+    <string name="text_mrz">MRZ</string>
+    <string name="text_share">Share</string>
+    <string name="text_settings">Settings</string>
+    <string name="text_preview">Image Preview</string>
+    <string name="text_license">License</string>
+    <string name="text_about">About</string>
+
+    <string name="desc_scan">desc_scan</string>
+    <string name="desc_icon">desc_icon</string>
+
+
+    <string name="result">Result</string>
+    <string name="image_preview">Image Preview</string>
+    <string name="imageView">Image View</string>
+
+    <string name="rationale_storage">App needs access to your storage</string>
+
+    <string name="share_imageView">Share ImageView</string>
+
+    <string name="select_image">Select Image</string>
+    <string name="enter_text">Enter something to share</string>
+    <string name="share_text">Share Text</string>
+    <string name="shared_text">Shared Text</string>
+    <string name="shared_image">Shared Image</string>
+    <string name="EditText">Edit Text</string>
+
+    <string name="enhance">ENHANCE</string>
+
+    <string name="splashscreen_welcome">SplashScreen Welcome</string>
+
+    <string name="main_logo">main_logo</string>
+    <string name="www_capturedoc_com">www.capturedoc.com</string>
+    <string name="logo_capture_desc">logo_capture_desc</string>
+
+    <string name="pref_header_camera_pref">Camera settings</string>
+    <string name="pref_header_image_processor">Image processor settings</string>
+    <string name="pref_header_about">About</string>
+    <string name="pref_header_license">License Agreement</string>
+
+    <string name="title_activity_settings">Capture Settings</string>
+
+    <string name="pref_title_show_gallery">Show Gallery:</string>
+    <string name="pref_title_device_declination_pitch">Device Declination Pitch (-180° - 180°)</string>
+    <string name="pref_title_device_declination_roll">Device Declination Roll (-180° - 180°)</string>
+    <string name="pref_title_manual_capture_time">Manual Capture Time</string>
+
+    <string name="pref_header_image_processor_basic">Basic</string>
+
+    <string name="pref_title_deskew_type_basic_mode">Deskew Type</string>
+    <string-array name="pref_list_deskew_type_basic_mode">
+        <item>None</item>
+        <item>By document edges</item>
+        <item>By document content</item>
+    </string-array>
+    <string-array name="pref_list_deskew_type_basic_mode_values">
+        <item>None</item>
+        <item>ByDocumentEdges</item>
+        <item>ByDocumentContent</item>
+    </string-array>
+
+    <string name="pref_title_image_processing_basic_mode">Mode</string>
+    <string-array name="pref_list_image_processing_basic_mode">
+        <item>BW</item>
+        <item>Gray</item>
+        <item>Color</item>
+    </string-array>
+    <string-array name="pref_list_image_processing_basic_mode_values">
+        <item>BW</item>
+        <item>Gray</item>
+        <item>Color</item>
+    </string-array>
+
+    <string name="pref_title_image_processing_auto_crop">Auto Crop</string>
+    <string name="pref_title_image_processing_auto_rotate">Auto Rotate</string>
+    <string name="pref_title_image_processing_deskew">Deskew</string>
+
+    <string name="pref_header_image_processor_advanced">Advanced</string>
+
+    <string name="pref_title_image_processing_scale">Scale (dpi)</string>
+    <string-array name="pref_list_image_processing_scale">
+        <item>Auto</item>
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+    </string-array>
+    <string-array name="pref_list_image_processing_scale_values">
+        <item>Auto</item>
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+    </string-array>
+
+    <string name="title_activity_capture">CaptureActivity</string>
+    <string name="title_activity_preview">PreviewActivity</string>
+    <string name="title_activity_process_image">ProcessImageActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_license_agreement">LicenseAgreementActivity</string>
+    <string name="title_activity_feedback">FeedbackActivity</string>
+
+    <string name="result_mrz">Result:</string>
+    <string name="mrz">MRZ(BETA)</string>
+    <string name="ocr">OCR</string>
+    <string name="manual_scan">Manual Scan</string>
+    <string name="transition_name_phone">transition</string>
+
+    <string name="drawer_open">Open Navigation Drawer</string>
+    <string name="drawer_close">Close Navigation Drawer</string>
+    <string name="desc_logo_capture">TODO</string>
+    <string name="home">Home</string>
+    <string name="feedback">Feedback</string>
+    <string name="flash">Flash</string>
+    <string name="desc_about_imageview">desc_about_imageView</string>
+    <string name="about_landscape">about_landscape</string>
+    <string name="rate_app">RATE APP</string>
+    <string name="to">To:</string>
+    <string name="subject">Subject:</string>
+    <string name="message">Message:</string>
+    <string name="send">send</string>
+
+
+</resources>

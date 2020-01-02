@@ -1,0 +1,2 @@
+include ':app', ':scanlibrary', ':liveedgedetection', ':openCVLibrary340'
+rootProject.name='CaptureDoc'

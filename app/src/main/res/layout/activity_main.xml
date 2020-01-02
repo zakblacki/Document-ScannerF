@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:fitsSystemWindows="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <LinearLayout
+        android:id="@+id/mainContent"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+
+        <include layout="@layout/toolbar_layout"/>
+
+    <!--scaleType="center" may need removed-->
+
+        <com.adityaarora.liveedgedetection.view.TouchImageView
+            android:id="@+id/scanned_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:contentDescription="@string/desc_scan"
+            app:srcCompat="@drawable/ic_camera_alt_black_24dp" />
+    </LinearLayout>
+
+
+            <!--  Button Principal   -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_capture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="30dp"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_linked_camera_white_24dp"
+        app:backgroundTint="@color/blue_light"
+        />
+
+
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <include layout="@layout/sidbar_layout"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

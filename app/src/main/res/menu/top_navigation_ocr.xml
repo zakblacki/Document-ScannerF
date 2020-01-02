@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_pick3"
+        android:icon="@drawable/ic_photo_library_black_24dp"
+        android:title="@string/text_gallery"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_share_ocr"
+        android:icon="@drawable/ic_share_blue_600_24dp"
+        android:title="@string/text_share"
+        app:showAsAction="always" />
+
+    <!--other menu items-->
+    <item
+        android:id="@+id/action_settings3"
+        android:title="@string/text_settings"
+        />
+    <item
+        android:id="@+id/action_license3"
+        android:title="@string/text_license"
+        />
+    <item
+        android:id="@+id/action_about3"
+        android:title="@string/text_about"
+        />
+
+
+</menu>

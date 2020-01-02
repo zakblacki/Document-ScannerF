@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ScanLibrary</string>
+    <string name="action_settings">Settings</string>
+    <string name="scanning">Scanning</string>
+    <string name="done">Save</string>
+    <string name="scan">Next</string>
+    <string name="cantCrop">Cannot crop the image, change the points</string>
+    <string name="ok">OK</string>
+    <string name="loading">Loading</string>
+    <string name="applying_filter">Applying filter</string>
+    <string name="low_memory">Low Memory</string>
+    <string name="low_memory_message">Your phone is low on memory, you may feel some lags while editing images.</string>
+    <string name="desc_button">Desc Button</string>
+    <string name="desc_button2">Desc Button 2</string>
+    <string name="imageNext">Next</string>
+    <string name="desc_scanlibrary_scannedimage">desc_scanlibrary_scannedImage</string>
+    <string name="b_and_w">B and W</string>
+    <string name="gray_mode">Gray Mode</string>
+    <string name="magic_color">Magic color</string>
+    <string name="original">Original</string>
+
+    <string name="file_provider_authority" translatable="false">com.quiro.fileproviderexample.fileprovider</string>
+    <string name="scannedImage_desc">TODO</string>
+
+</resources>
