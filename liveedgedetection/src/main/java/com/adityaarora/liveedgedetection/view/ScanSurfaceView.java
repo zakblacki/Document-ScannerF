@@ -137,6 +137,7 @@ public class ScanSurfaceView extends FrameLayout implements SurfaceHolder.Callba
         }
 
         Camera.Size size = ScanUtils.getOptimalPictureSize(camera, width, height, parameters.getPreviewSize());
+        //original
         //Camera.Size size = ScanUtils.determinePictureSize(camera, parameters.getPreviewSize());
         parameters.setPictureSize(size.width, size.height);
         parameters.setPictureFormat(ImageFormat.JPEG);

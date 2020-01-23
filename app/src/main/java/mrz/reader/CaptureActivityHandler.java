@@ -16,20 +16,23 @@
  */
 package mrz.reader;
 
-import android.os.Build;
+import mrz.reader.camera.CameraManager;
+import com.nabeeltech.capturedoc.R;
+
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
-
-import com.nabeeltech.capturedoc.R;
-
-import mrz.reader.camera.CameraManager;
+import mrz.reader.CaptureActivity;
+import mrz.reader.DecodeHandler;
+import mrz.reader.DecodeThread;
+import mrz.reader.OcrResult;
+import mrz.reader.OcrResultFailure;
 
 /**
- * This class handles all the messaging which comprises the state machine for activiy_capture_mrz.
+ * This class handles all the messaging which comprises the state machine for capture.
  *
  * The code for this class was adapted from the ZXing project: http://code.google.com/p/zxing/
  */
@@ -66,9 +69,7 @@ final class CaptureActivityHandler extends Handler {
 
 
       // Display a "be patient" message while first recognition request is running
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        activity.setStatusViewForContinuous();
-      }
+      activity.setStatusViewForContinuous();
 
       restartOcrPreviewAndDecode();
     } else {
@@ -89,9 +90,7 @@ final class CaptureActivityHandler extends Handler {
       case R.id.ocr_continuous_decode_failed:
         DecodeHandler.resetDecodeState();
         try {
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.handleOcrContinuousDecode((OcrResultFailure) message.obj);
-          }
+          activity.handleOcrContinuousDecode((OcrResultFailure) message.obj);
         } catch (NullPointerException e) {
           Log.w(TAG, "got bad OcrResultFailure", e);
         }
@@ -102,9 +101,7 @@ final class CaptureActivityHandler extends Handler {
       case R.id.ocr_continuous_decode_succeeded:
         DecodeHandler.resetDecodeState();
         try {
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.handleOcrContinuousDecode((OcrResult) message.obj);
-          }
+          activity.handleOcrContinuousDecode((OcrResult) message.obj);
         } catch (NullPointerException e) {
           // Continue
         }
@@ -114,9 +111,7 @@ final class CaptureActivityHandler extends Handler {
         break;
       case R.id.ocr_decode_succeeded:
         state = State.SUCCESS;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-          activity.handleOcrDecode((OcrResult) message.obj);
-        }
+        activity.handleOcrDecode((OcrResult) message.obj);
         break;
       case R.id.ocr_decode_failed:
         state = State.PREVIEW;
@@ -188,9 +183,7 @@ final class CaptureActivityHandler extends Handler {
       state = State.PREVIEW;
 
       // Draw the viewfinder.
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        activity.drawViewfinder();
-      }
+      activity.drawViewfinder();
     }
   }
 
@@ -203,9 +196,7 @@ final class CaptureActivityHandler extends Handler {
 
     // Continue requesting decode of images
     cameraManager.requestOcrDecode(decodeThread.getHandler(), R.id.ocr_continuous_decode);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      activity.drawViewfinder();
-    }
+    activity.drawViewfinder();
   }
 
   /**

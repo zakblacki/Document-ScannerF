@@ -15,10 +15,10 @@
  */
 package mrz.reader;
 
+import java.util.List;
+
 import android.graphics.Point;
 import android.graphics.Rect;
-
-import java.util.List;
 
 /**
  * Encapsulates text and its character/word coordinates resulting from OCR.
@@ -36,14 +36,14 @@ public final class OcrResultText {
   private final List<Rect> characterBoundingBoxes;
 
   public OcrResultText(String text,
-                   int[] wordConfidences,
-                   int meanConfidence,
-                   Point bitmapDimensions,
-                   List<Rect> regionBoundingBoxes,
-                   List<Rect> textlineBoundingBoxes,
-                   List<Rect> stripBoundingBoxes,
-                   List<Rect> wordBoundingBoxes,
-                   List<Rect> characterBoundingBoxes) {
+                       int[] wordConfidences,
+                       int meanConfidence,
+                       Point bitmapDimensions,
+                       List<Rect> regionBoundingBoxes,
+                       List<Rect> textlineBoundingBoxes,
+                       List<Rect> stripBoundingBoxes,
+                       List<Rect> wordBoundingBoxes,
+                       List<Rect> characterBoundingBoxes) {
     this.text = text;
     this.wordConfidences = wordConfidences;
     this.meanConfidence = meanConfidence;
@@ -80,7 +80,7 @@ public final class OcrResultText {
   }
 
   public List<Rect> getStripBoundingBoxes() {
-  	return stripBoundingBoxes;
+    return stripBoundingBoxes;
   }
 
   public List<Rect> getWordBoundingBoxes() {

@@ -30,6 +30,8 @@ import java.io.IOException;
 
 import mrz.reader.PlanarYUVLuminanceSource;
 import mrz.reader.PreferencesActivity;
+import mrz.reader.camera.AutoFocusManager;
+import mrz.reader.camera.CameraConfigurationManager;
 
 /**
  * This object wraps the Camera service object and expects to be the only one talking to it. The
@@ -267,20 +269,22 @@ public final class CameraManager {
     return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,
             rect.width(), rect.height(), reverseImage);
   }
-//  public void turnFlashlightOn() {
-//
-//    Camera.Parameters parameters = camera.getParameters();
-//    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-//    camera.setParameters(parameters);
-//
-//  }
-//
-//  public void turnFlashlightOff() {
-//
-//    Camera.Parameters parameters = camera.getParameters();
-//    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-//    camera.setParameters(parameters);
-//
-//
-//  }
+  public void turnFlashlightOn() {
+
+    Camera.Parameters parameters = camera.getParameters();
+    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+    camera.setParameters(parameters);
+
+  }
+
+  public void turnFlashlightOff() {
+
+    Camera.Parameters parameters = camera.getParameters();
+    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+    camera.setParameters(parameters);
+
+
+  }
+
+
 }

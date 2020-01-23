@@ -15,10 +15,11 @@
  */
 package mrz.reader;
 
+import java.util.ArrayList;
+
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -32,7 +33,8 @@ import com.googlecode.tesseract.android.TessBaseAPI;
 import com.googlecode.tesseract.android.TessBaseAPI.PageIteratorLevel;
 import com.nabeeltech.capturedoc.R;
 
-import java.util.ArrayList;
+import mrz.reader.CaptureActivity;
+import mrz.reader.OcrResult;
 
 /**
  * Class to send OCR requests to the OCR engine in a separate thread, send a success/failure message,
@@ -63,10 +65,7 @@ final class OcrRecognizeAsyncTask extends AsyncTask<Void, Void, Boolean> {
   @Override
   protected Boolean doInBackground(Void... arg0) {
     long start = System.currentTimeMillis();
-    Bitmap bitmap = null;
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-      bitmap = activity.getCameraManager().buildLuminanceSource(data, width, height).renderCroppedGreyscaleBitmap();
-    }
+    Bitmap bitmap = activity.getCameraManager().buildLuminanceSource(data, width, height).renderCroppedGreyscaleBitmap();
     String textResult;
 
     //      if (PERFORM_FISHER_THRESHOLDING) {
@@ -75,9 +74,9 @@ final class OcrRecognizeAsyncTask extends AsyncTask<Void, Void, Boolean> {
     //        bitmap = WriteFile.writeBitmap(thresholdedImage);
     //      }
     //      if (PERFORM_OTSU_THRESHOLDING) {
-            Pix thresholdedImage = Binarize.otsuAdaptiveThreshold(ReadFile.readBitmap(bitmap));
-            Log.e("OcrRecognizeAsyncTask", "thresholding completed. converting to bmp. size:" + bitmap.getWidth() + "x" + bitmap.getHeight());
-            bitmap = WriteFile.writeBitmap(thresholdedImage);
+    Pix thresholdedImage = Binarize.otsuAdaptiveThreshold(ReadFile.readBitmap(bitmap));
+    Log.e("OcrRecognizeAsyncTask", "thresholding completed. converting to bmp. size:" + bitmap.getWidth() + "x" + bitmap.getHeight());
+    bitmap = WriteFile.writeBitmap(thresholdedImage);
     //      }
     //      if (PERFORM_SOBEL_THRESHOLDING) {
     //        Pix thresholdedImage = Thresholder.sobelEdgeThreshold(ReadFile.readBitmap(bitmap), 64);
@@ -117,10 +116,10 @@ final class OcrRecognizeAsyncTask extends AsyncTask<Void, Void, Boolean> {
       ArrayList<Rect> charBoxes = new ArrayList<Rect>();
       iterator.begin();
       do {
-          lastBoundingBox = iterator.getBoundingBox(PageIteratorLevel.RIL_SYMBOL);
-          Rect lastRectBox = new Rect(lastBoundingBox[0], lastBoundingBox[1],
-                  lastBoundingBox[2], lastBoundingBox[3]);
-          charBoxes.add(lastRectBox);
+        lastBoundingBox = iterator.getBoundingBox(PageIteratorLevel.RIL_SYMBOL);
+        Rect lastRectBox = new Rect(lastBoundingBox[0], lastBoundingBox[1],
+                lastBoundingBox[2], lastBoundingBox[3]);
+        charBoxes.add(lastRectBox);
       } while (iterator.next(PageIteratorLevel.RIL_SYMBOL));
       iterator.delete();
       ocrResult.setCharacterBoundingBoxes(charBoxes);
@@ -130,9 +129,7 @@ final class OcrRecognizeAsyncTask extends AsyncTask<Void, Void, Boolean> {
       e.printStackTrace();
       try {
         baseApi.clear();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-          activity.stopHandler();
-        }
+        activity.stopHandler();
       } catch (NullPointerException e1) {
         // Continue
       }
@@ -149,10 +146,7 @@ final class OcrRecognizeAsyncTask extends AsyncTask<Void, Void, Boolean> {
   protected void onPostExecute(Boolean result) {
     super.onPostExecute(result);
 
-    Handler handler = null;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      handler = activity.getHandler();
-    }
+    Handler handler = activity.getHandler();
     if (handler != null) {
       // Send results for single-shot mode recognition.
       if (result) {
@@ -162,9 +156,7 @@ final class OcrRecognizeAsyncTask extends AsyncTask<Void, Void, Boolean> {
         Message message = Message.obtain(handler, R.id.ocr_decode_failed, ocrResult);
         message.sendToTarget();
       }
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        activity.getProgressDialog().dismiss();
-      }
+      activity.getProgressDialog().dismiss();
     }
     if (baseApi != null) {
       baseApi.clear();

@@ -27,14 +27,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ScanFragment extends Fragment {
-    /* access modifiers changed from: private */
-    public Bitmap original;
-    /* access modifiers changed from: private */
-    public PolygonView polygonView;
+    private Bitmap original;
+    private PolygonView polygonView;
     private ProgressDialogFragment progressDialogFragment;
     private Button scanButton;
-    /* access modifiers changed from: private */
-    public IScanner scanner;
+    private IScanner scanner;
     private FrameLayout sourceFrame;
     private ImageView sourceImageView;
     private View view;
@@ -42,18 +39,18 @@ public class ScanFragment extends Fragment {
     private class ScanAsyncTask extends AsyncTask<Void, Void, Bitmap> {
         private Map<Integer, PointF> points;
 
-        public ScanAsyncTask(Map<Integer, PointF> points2) {
-            this.points = points2;
+        public ScanAsyncTask(Map<Integer, PointF> points) {
+            this.points = points;
         }
 
-        /* access modifiers changed from: protected */
+        /* Access modifiers changed, original: protected */
         public void onPreExecute() {
             super.onPreExecute();
             ScanFragment scanFragment = ScanFragment.this;
             scanFragment.showProgressDialog(scanFragment.getString(R.string.scanning));
         }
 
-        /* access modifiers changed from: protected */
+        /* Access modifiers changed, original: protected|varargs */
         public Bitmap doInBackground(Void... params) {
             ScanFragment scanFragment = ScanFragment.this;
             Bitmap bitmap = scanFragment.getScannedBitmap(scanFragment.original, this.points);
@@ -61,7 +58,7 @@ public class ScanFragment extends Fragment {
             return bitmap;
         }
 
-        /* access modifiers changed from: protected */
+        /* Access modifiers changed, original: protected */
         public void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
             bitmap.recycle();
@@ -70,8 +67,9 @@ public class ScanFragment extends Fragment {
     }
 
     private class ScanButtonClickListener implements OnClickListener {
-        private ScanButtonClickListener() {
+        private ScanButtonClickListener(ScanFragment scanFragment, Object o) {
         }
+
 
         public void onClick(View v) {
             Map<Integer, PointF> points = ScanFragment.this.polygonView.getPoints();
@@ -101,7 +99,7 @@ public class ScanFragment extends Fragment {
     private void init() {
         this.sourceImageView = (ImageView) this.view.findViewById(R.id.sourceImageView);
         this.scanButton = (Button) this.view.findViewById(R.id.scanButton);
-        this.scanButton.setOnClickListener(new ScanButtonClickListener());
+        this.scanButton.setOnClickListener(new ScanButtonClickListener(this, null));
         this.sourceFrame = (FrameLayout) this.view.findViewById(R.id.sourceFrame);
         this.polygonView = (PolygonView) this.view.findViewById(R.id.polygonView);
         this.sourceFrame.post(new Runnable() {
@@ -109,15 +107,14 @@ public class ScanFragment extends Fragment {
                 ScanFragment scanFragment = ScanFragment.this;
                 scanFragment.original = scanFragment.getBitmap();
                 if (ScanFragment.this.original != null) {
-                    ScanFragment scanFragment2 = ScanFragment.this;
-                    scanFragment2.setBitmap(scanFragment2.original);
+                    scanFragment = ScanFragment.this;
+                    scanFragment.setBitmap(scanFragment.original);
                 }
             }
         });
     }
 
-    /* access modifiers changed from: private */
-    public Bitmap getBitmap() {
+    private Bitmap getBitmap() {
         Uri uri = getUri();
         try {
             Bitmap bitmap = Utils.getBitmap(getActivity(), uri);
@@ -133,9 +130,8 @@ public class ScanFragment extends Fragment {
         return (Uri) getArguments().getParcelable(ScanConstants.SELECTED_BITMAP);
     }
 
-    /* access modifiers changed from: private */
-    public void setBitmap(Bitmap original2) {
-        this.sourceImageView.setImageBitmap(scaledBitmap(original2, this.sourceFrame.getWidth(), this.sourceFrame.getHeight()));
+    private void setBitmap(Bitmap original) {
+        this.sourceImageView.setImageBitmap(scaledBitmap(original, this.sourceFrame.getWidth(), this.sourceFrame.getHeight()));
         Bitmap tempBitmap = ((BitmapDrawable) this.sourceImageView.getDrawable()).getBitmap();
         this.polygonView.setPoints(getEdgePoints(tempBitmap));
         this.polygonView.setVisibility(View.VISIBLE);
@@ -159,7 +155,7 @@ public class ScanFragment extends Fragment {
         float y2 = points[5];
         float y3 = points[6];
         float y4 = points[7];
-        List<PointF> pointFs = new ArrayList<>();
+        List<PointF> pointFs = new ArrayList();
         pointFs.add(new PointF(x1, y1));
         pointFs.add(new PointF(x2, y2));
         pointFs.add(new PointF(x3, y3));
@@ -168,7 +164,7 @@ public class ScanFragment extends Fragment {
     }
 
     private Map<Integer, PointF> getOutlinePoints(Bitmap tempBitmap) {
-        Map<Integer, PointF> outlinePoints = new HashMap<>();
+        Map<Integer, PointF> outlinePoints = new HashMap();
         outlinePoints.put(Integer.valueOf(0), new PointF(0.0f, 0.0f));
         outlinePoints.put(Integer.valueOf(1), new PointF((float) tempBitmap.getWidth(), 0.0f));
         outlinePoints.put(Integer.valueOf(2), new PointF(0.0f, (float) tempBitmap.getHeight()));
@@ -178,19 +174,17 @@ public class ScanFragment extends Fragment {
 
     private Map<Integer, PointF> orderedValidEdgePoints(Bitmap tempBitmap, List<PointF> pointFs) {
         Map<Integer, PointF> orderedPoints = this.polygonView.getOrderedPoints(pointFs);
-        if (!this.polygonView.isValidShape(orderedPoints)) {
-            return getOutlinePoints(tempBitmap);
+        if (this.polygonView.isValidShape(orderedPoints)) {
+            return orderedPoints;
         }
-        return orderedPoints;
+        return getOutlinePoints(tempBitmap);
     }
 
-    /* access modifiers changed from: private */
-    public void showErrorDialog() {
+    private void showErrorDialog() {
         new SingleButtonDialogFragment(R.string.ok, getString(R.string.cantCrop), "Error", true).show(getActivity().getFragmentManager(), SingleButtonDialogFragment.class.toString());
     }
 
-    /* access modifiers changed from: private */
-    public boolean isScanPointsValid(Map<Integer, PointF> points) {
+    private boolean isScanPointsValid(Map<Integer, PointF> points) {
         return points.size() == 4;
     }
 
@@ -200,58 +194,56 @@ public class ScanFragment extends Fragment {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
     }
 
-    /* access modifiers changed from: private */
-    public Bitmap getScannedBitmap(Bitmap original2, Map<Integer, PointF> points) {
+    private Bitmap getScannedBitmap(Bitmap original, Map<Integer, PointF> points) {
         Map<Integer, PointF> map = points;
-        int width = original2.getWidth();
-        int height = original2.getHeight();
-        float xRatio = ((float) original2.getWidth()) / ((float) this.sourceImageView.getWidth());
-        float yRatio = ((float) original2.getHeight()) / ((float) this.sourceImageView.getHeight());
+        int width = original.getWidth();
+        int height = original.getHeight();
+        float xRatio = ((float) original.getWidth()) / ((float) this.sourceImageView.getWidth());
+        float yRatio = ((float) original.getHeight()) / ((float) this.sourceImageView.getHeight());
         Integer valueOf = Integer.valueOf(0);
         float x1 = ((PointF) map.get(valueOf)).x * xRatio;
         Integer valueOf2 = Integer.valueOf(1);
         float x2 = ((PointF) map.get(valueOf2)).x * xRatio;
         Integer valueOf3 = Integer.valueOf(2);
-        float x3 = ((PointF) map.get(valueOf3)).x * xRatio;
+        float f = ((PointF) map.get(valueOf3)).x * xRatio;
         Integer valueOf4 = Integer.valueOf(3);
         float x4 = ((PointF) map.get(valueOf4)).x * xRatio;
         float y1 = ((PointF) map.get(valueOf)).y * yRatio;
         float y2 = ((PointF) map.get(valueOf2)).y * yRatio;
         float y3 = ((PointF) map.get(valueOf3)).y * yRatio;
         float y4 = ((PointF) map.get(valueOf4)).y * yRatio;
-        StringBuilder sb = new StringBuilder();
-        sb.append("POints(");
-        sb.append(x1);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("POints(");
+        stringBuilder.append(x1);
         String str = ",";
-        sb.append(str);
-        sb.append(y1);
+        stringBuilder.append(str);
+        stringBuilder.append(y1);
         String str2 = ")(";
-        sb.append(str2);
-        sb.append(x2);
-        sb.append(str);
-        sb.append(y2);
-        sb.append(str2);
-        sb.append(x3);
-        sb.append(str);
-        sb.append(y3);
-        sb.append(str2);
-        sb.append(x4);
-        sb.append(str);
-        sb.append(y4);
-        sb.append(")");
-        Log.d("", sb.toString());
-        float f = x3;
-        float f2 = x2;
-        return ((ScanActivity) getActivity()).getScannedBitmap(original2, x1, y1, x2, y2, x3, y3, x4, y4);
+        stringBuilder.append(str2);
+        stringBuilder.append(x2);
+        stringBuilder.append(str);
+        stringBuilder.append(y2);
+        stringBuilder.append(str2);
+        stringBuilder.append(f);
+        stringBuilder.append(str);
+        stringBuilder.append(y3);
+        stringBuilder.append(str2);
+        stringBuilder.append(x4);
+        stringBuilder.append(str);
+        stringBuilder.append(y4);
+        stringBuilder.append(")");
+        Log.d("", stringBuilder.toString());
+        float x3 = f;
+        return ((ScanActivity) getActivity()).getScannedBitmap(original, x1, y1, x2, y2, f, y3, x4, y4);
     }
 
-    /* access modifiers changed from: protected */
+    /* Access modifiers changed, original: protected */
     public void showProgressDialog(String message) {
         this.progressDialogFragment = new ProgressDialogFragment(message);
         this.progressDialogFragment.show(getFragmentManager(), ProgressDialogFragment.class.toString());
     }
 
-    /* access modifiers changed from: protected */
+    /* Access modifiers changed, original: protected */
     public void dismissDialog() {
         this.progressDialogFragment.dismissAllowingStateLoss();
     }

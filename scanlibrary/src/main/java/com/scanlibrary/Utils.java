@@ -20,4 +20,5 @@ public class Utils {
     public static Bitmap getBitmap(Context context, Uri uri) throws IOException {
         return Media.getBitmap(context.getContentResolver(), uri);
     }
+
 }

@@ -10,11 +10,12 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 
 @SuppressLint("ValidFragment")
+
 public class ProgressDialogFragment extends DialogFragment {
 	public String message;
 
-	public ProgressDialogFragment(String message2) {
-		this.message = message2;
+	public ProgressDialogFragment(String message) {
+		this.message = message;
 	}
 
 	public Dialog onCreateDialog(Bundle savedInstanceState) {

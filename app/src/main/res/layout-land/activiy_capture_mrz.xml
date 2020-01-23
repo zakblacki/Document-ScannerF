@@ -179,14 +179,12 @@
         android:background="@drawable/toggle_flash_button">
 
       <ImageView
-          android:id="@+id/imageFlashlight"
+          android:id="@+id/iconFlash"
           android:layout_gravity="center"
           android:layout_width="20dp"
           android:layout_height="20dp"
           android:background="@drawable/ic_flash_off_black_24dp"
           android:scaleType="fitCenter"/>
-
-
 
     </FrameLayout>
     <TextView android:id="@+id/status_view_bottom"

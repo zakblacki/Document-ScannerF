@@ -15,14 +15,14 @@
  */
 package mrz.reader;
 
+import java.util.List;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
 import android.graphics.Rect;
-
-import java.util.List;
 
 /**
  * Encapsulates the result of OCR.
@@ -138,7 +138,7 @@ public class OcrResult {
   }
 
   public List<Rect> getStripBoundingBoxes() {
-  	return stripBoundingBoxes;
+    return stripBoundingBoxes;
   }
 
   public List<Rect> getCharacterBoundingBoxes() {
@@ -182,7 +182,7 @@ public class OcrResult {
   }
 
   public void setStripBoundingBoxes(List<Rect> stripBoundingBoxes) {
-  	this.stripBoundingBoxes = stripBoundingBoxes;
+    this.stripBoundingBoxes = stripBoundingBoxes;
   }
 
   public void setCharacterBoundingBoxes(List<Rect> characterBoundingBoxes) {

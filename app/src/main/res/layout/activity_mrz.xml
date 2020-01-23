@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    >
-<!--    tools:context=".MRZActivity"-->
+    tools:context=".MRZActivity">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Document : "/>
+                android:text="@string/document"/>
 
             <TextView
                 android:id="@+id/tv_document"
@@ -48,7 +48,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Last Name : "/>
+                android:text="@string/last_name"/>
 
             <TextView
                 android:id="@+id/tv_lastname"
@@ -66,7 +66,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="First Name : "/>
+                android:text="@string/first_name"/>
 
             <TextView
                 android:id="@+id/tv_firstname"
@@ -84,7 +84,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Passport No : "/>
+                android:text="@string/passport_no"/>
 
             <TextView
                 android:id="@+id/tv_passport_no"
@@ -102,7 +102,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Country : "/>
+                android:text="@string/country"/>
 
             <TextView
                 android:id="@+id/tv_country"
@@ -120,7 +120,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sex : "/>
+                android:text="@string/sex"/>
 
             <TextView
                 android:id="@+id/tv_sex"
@@ -138,7 +138,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date of Birth : "/>
+                android:text="@string/date_of_birth"/>
 
             <TextView
                 android:id="@+id/tv_dob"
@@ -156,7 +156,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date of Expiry : "/>
+                android:text="@string/date_of_expiry"/>
 
             <TextView
                 android:id="@+id/tv_doe"
@@ -177,7 +177,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="scan"/>
+            android:background="#EEE86B"
+
+            android:text="@string/scan"/>
 
     </FrameLayout>
 

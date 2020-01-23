@@ -11,7 +11,7 @@ android {
         ndk
                 {
                     moduleName "Scanner"
-                    abiFilters 'arm64-v8a', 'armeabi', 'armeabi-v7a', 'mips', 'mips64', 'x86', 'x86_64'
+//                    abiFilters 'arm64-v8a', 'armeabi', 'armeabi-v7a', 'mips', 'mips64', 'x86', 'x86_64'
                 }
     }
     sourceSets.main
@@ -27,33 +27,33 @@ android {
 
     }
 
-    packagingOptions {
-        exclude "lib/arm64-v8a/libIlmImf.a"
-        exclude "lib/arm64-v8a/liblibjasper.a"
-        exclude "lib/arm64-v8a/liblibjpeg.a"
-        exclude "lib/arm64-v8a/liblibpng.a"
-        exclude "lib/arm64-v8a/liblibtiff.a"
-        exclude "lib/arm64-v8a/liblibwebp.a"
-        exclude "lib/arm64-v8a/libopencv_calib3d.a"
-        exclude "lib/arm64-v8a/libopencv_core.a"
-        exclude "lib/arm64-v8a/libopencv_features2d.a"
-        exclude "lib/arm64-v8a/libopencv_flann.a"
-        exclude "lib/arm64-v8a/libopencv_highgui.a"
-        exclude "lib/arm64-v8a/libopencv_imgcodecs.a"
-        exclude "lib/arm64-v8a/libopencv_imgproc.a"
-        exclude "lib/arm64-v8a/libopencv_java3.so"
-        exclude "lib/arm64-v8a/libopencv_ml.a"
-        exclude "lib/arm64-v8a/libopencv_objdetect.a"
-        exclude "lib/arm64-v8a/libopencv_photo.a"
-        exclude "lib/arm64-v8a/libopencv_shape.a"
-        exclude "lib/arm64-v8a/libopencv_stitching.a"
-        exclude "lib/arm64-v8a/libopencv_superres.a"
-        exclude "lib/arm64-v8a/libopencv_objdetect.a"
-        exclude "lib/arm64-v8a/libopencv_video.a"
-        exclude "lib/arm64-v8a/libopencv_videoio.a"
-        exclude "lib/arm64-v8a/libopencv_videostab.a"
-
-    }
+//    packagingOptions {
+//        exclude "lib/arm64-v8a/libIlmImf.a"
+//        exclude "lib/arm64-v8a/liblibjasper.a"
+//        exclude "lib/arm64-v8a/liblibjpeg.a"
+//        exclude "lib/arm64-v8a/liblibpng.a"
+//        exclude "lib/arm64-v8a/liblibtiff.a"
+//        exclude "lib/arm64-v8a/liblibwebp.a"
+//        exclude "lib/arm64-v8a/libopencv_calib3d.a"
+//        exclude "lib/arm64-v8a/libopencv_core.a"
+//        exclude "lib/arm64-v8a/libopencv_features2d.a"
+//        exclude "lib/arm64-v8a/libopencv_flann.a"
+//        exclude "lib/arm64-v8a/libopencv_highgui.a"
+//        exclude "lib/arm64-v8a/libopencv_imgcodecs.a"
+//        exclude "lib/arm64-v8a/libopencv_imgproc.a"
+//        exclude "lib/arm64-v8a/libopencv_java3.so"
+//        exclude "lib/arm64-v8a/libopencv_ml.a"
+//        exclude "lib/arm64-v8a/libopencv_objdetect.a"
+//        exclude "lib/arm64-v8a/libopencv_photo.a"
+//        exclude "lib/arm64-v8a/libopencv_shape.a"
+//        exclude "lib/arm64-v8a/libopencv_stitching.a"
+//        exclude "lib/arm64-v8a/libopencv_superres.a"
+//        exclude "lib/arm64-v8a/libopencv_objdetect.a"
+//        exclude "lib/arm64-v8a/libopencv_video.a"
+//        exclude "lib/arm64-v8a/libopencv_videoio.a"
+//        exclude "lib/arm64-v8a/libopencv_videostab.a"
+//
+//    }
 }
 
 dependencies {

@@ -11,16 +11,18 @@
         android:layout_gravity="center_vertical">
 
         <Button
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/original"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:drawableTop="@drawable/ic_image"
-            android:text="Org"
+            android:text="@string/org"
             android:textColor="@android:color/white" />
 
         <Button
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/magicColor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -28,10 +30,11 @@
             android:background="@android:color/transparent"
             android:drawableTop="@drawable/ic_enhamce_image"
             android:singleLine="true"
-            android:text="Magic"
+            android:text="@string/magic"
             android:textColor="@android:color/white" />
 
         <Button
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/grayMode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -39,10 +42,11 @@
             android:background="@android:color/transparent"
             android:drawableTop="@drawable/ic_gray"
             android:singleLine="true"
-            android:text="Gray"
+            android:text="@string/gray"
             android:textColor="@android:color/white" />
 
         <Button
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/BWMode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -50,7 +54,7 @@
             android:background="@android:color/transparent"
             android:drawableTop="@drawable/ic_black_and_white"
             android:singleLine="true"
-            android:text="B &amp; W"
+            android:text="@string/b_amp_w"
             android:textColor="@android:color/white" />
 
 
@@ -80,7 +84,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/scanPadding" />
+            android:layout_margin="@dimen/scanPadding"
+            android:contentDescription="@string/scannedImage_desc" />
     </FrameLayout>
 
 

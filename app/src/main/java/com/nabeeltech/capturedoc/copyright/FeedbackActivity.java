@@ -18,7 +18,7 @@ import com.nabeeltech.capturedoc.R;
 
 public class FeedbackActivity extends AppCompatActivity {
 
-    EditText mEditTextTo, mEditTextSubject, mEditTextMessage;
+    EditText mEditTextSubject, mEditTextMessage;
 
     FloatingActionButton rateFab;
 
@@ -32,7 +32,7 @@ public class FeedbackActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        mEditTextTo = findViewById(R.id.edit_text_to);
+        //mEditTextTo = findViewById(R.id.edit_text_to);
         mEditTextSubject = findViewById(R.id.edit_text_subject);
         mEditTextMessage = findViewById(R.id.edit_text_message);
 
@@ -73,14 +73,14 @@ public class FeedbackActivity extends AppCompatActivity {
     private void sendMail(String mText) {
         try {
 
-            String recipientList = mEditTextTo.getText().toString();
-            String[] recipients = recipientList.split(",");
+            //String recipientList = mEditTextTo.getText().toString();
+            //String[] recipients = recipientList.split(",");
 
             String subject = mEditTextSubject.getText().toString();
             String message = mEditTextMessage.getText().toString();
 
             Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_EMAIL, recipients);
+            //intent.putExtra(Intent.EXTRA_EMAIL, recipients);
             intent.putExtra(Intent.EXTRA_SUBJECT, subject);
             intent.putExtra(Intent.EXTRA_TEXT, message);
 

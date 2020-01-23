@@ -23,6 +23,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import mrz.reader.camera.CameraConfigurationManager;
+
 /**
  * Called when the next preview frame is received.
  *
@@ -53,7 +55,7 @@ final class PreviewCallback implements Camera.PreviewCallback {
     Handler thePreviewHandler = previewHandler;
     if (cameraResolution != null && thePreviewHandler != null) {
       Message message = thePreviewHandler.obtainMessage(previewMessage, cameraResolution.x,
-          cameraResolution.y, data);
+              cameraResolution.y, data);
       message.sendToTarget();
       previewHandler = null;
     } else {

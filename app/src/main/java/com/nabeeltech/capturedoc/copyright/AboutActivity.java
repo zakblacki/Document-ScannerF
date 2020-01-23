@@ -48,7 +48,7 @@ public class AboutActivity extends AppCompatActivity {
                 "<P STYLE=\"margin-top: 0.07in; margin-bottom: 0.07in\"><FONT SIZE=2>\n" +
                 "<p>When the user opens the camera, the software can guide them to take the image at the right angle. Access to the camera torch is enabled. Finally, the image taken is processed and cleaned up with eVRS and ready for process OCR or storage.</p>\n" +
                 "<p>Full Open Source</p>\n" +
-//                "<h3 style=\"color: #2e6c80;\">About information:</h3>\n" +
+                "<h3>About information:</h3>\n" +
                 "<ol style=\"list-style: none; font-size: 14px; line-height: 32px; font-weight: bold;\">\n" +
                 "<li style=\"clear: both;\">MobileImage – \n " +
                 "Document Capture from CaptureDoc.</li>\n" +

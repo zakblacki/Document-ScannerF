@@ -19,8 +19,10 @@ package mrz.reader;
 
 import android.os.Handler;
 import android.os.Looper;
-
 import java.util.concurrent.CountDownLatch;
+
+import mrz.reader.CaptureActivity;
+import mrz.reader.DecodeHandler;
 
 /**
  * This thread does all the heavy lifting of decoding the images.

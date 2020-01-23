@@ -18,7 +18,6 @@ package mrz.reader;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -26,6 +25,9 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
 import com.nabeeltech.capturedoc.R;
+
+import mrz.reader.CaptureActivity;
+import mrz.reader.OcrCharacterHelper;
 
 
 /**
@@ -37,7 +39,7 @@ import com.nabeeltech.capturedoc.R;
  * The code for this class was adapted from the ZXing project: http://code.google.com/p/zxing
  */
 public class PreferencesActivity extends PreferenceActivity implements
-  OnSharedPreferenceChangeListener {
+        OnSharedPreferenceChangeListener {
 
   // Preference keys not carried over from ZXing project
   public static final String KEY_SOURCE_LANGUAGE_PREFERENCE = "sourceLanguageCodeOcrPref";
@@ -111,12 +113,10 @@ public class PreferencesActivity extends PreferenceActivity implements
    */
   @Override
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-      String key) {
+                                        String key) {
     // Update preference summary values to show current preferences
     if (key.equals(KEY_TRANSLATOR)) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        listPreferenceTranslator.setSummary(sharedPreferences.getString(key, CaptureActivity.DEFAULT_TRANSLATOR));
-      }
+      listPreferenceTranslator.setSummary(sharedPreferences.getString(key, CaptureActivity.DEFAULT_TRANSLATOR));
     } else if(key.equals(KEY_SOURCE_LANGUAGE_PREFERENCE)) {
 
 
@@ -134,19 +134,15 @@ public class PreferencesActivity extends PreferenceActivity implements
 
     } else if (key.equals(KEY_TARGET_LANGUAGE_PREFERENCE)) {
     } else if (key.equals(KEY_PAGE_SEGMENTATION_MODE)) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        listPreferencePageSegmentationMode.setSummary(sharedPreferences.getString(key, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE));
-      }
+      listPreferencePageSegmentationMode.setSummary(sharedPreferences.getString(key, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE));
     } else if (key.equals(KEY_OCR_ENGINE_MODE)) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        listPreferenceOcrEngineMode.setSummary(sharedPreferences.getString(key, CaptureActivity.DEFAULT_OCR_ENGINE_MODE));
-      }
+      listPreferenceOcrEngineMode.setSummary(sharedPreferences.getString(key, CaptureActivity.DEFAULT_OCR_ENGINE_MODE));
     } else if (key.equals(KEY_CHARACTER_BLACKLIST)) {
 
       // Save a separate, language-specific character blacklist for this language
       OcrCharacterHelper.setBlacklist(sharedPreferences,
-          listPreferenceSourceLanguage.getValue(),
-          sharedPreferences.getString(key, OcrCharacterHelper.getDefaultBlacklist(listPreferenceSourceLanguage.getValue())));
+              listPreferenceSourceLanguage.getValue(),
+              sharedPreferences.getString(key, OcrCharacterHelper.getDefaultBlacklist(listPreferenceSourceLanguage.getValue())));
 
       // Set the summary text
       editTextPreferenceCharacterBlacklist.setSummary(sharedPreferences.getString(key, OcrCharacterHelper.getDefaultBlacklist(listPreferenceSourceLanguage.getValue())));
@@ -155,8 +151,8 @@ public class PreferencesActivity extends PreferenceActivity implements
 
       // Save a separate, language-specific character blacklist for this language
       OcrCharacterHelper.setWhitelist(sharedPreferences,
-          listPreferenceSourceLanguage.getValue(),
-          sharedPreferences.getString(key, OcrCharacterHelper.getDefaultWhitelist(listPreferenceSourceLanguage.getValue())));
+              listPreferenceSourceLanguage.getValue(),
+              sharedPreferences.getString(key, OcrCharacterHelper.getDefaultWhitelist(listPreferenceSourceLanguage.getValue())));
 
       // Set the summary text
       editTextPreferenceCharacterWhitelist.setSummary(sharedPreferences.getString(key, OcrCharacterHelper.getDefaultWhitelist(listPreferenceSourceLanguage.getValue())));
@@ -177,16 +173,11 @@ public class PreferencesActivity extends PreferenceActivity implements
   void initTranslationTargetList() {
     // Set the preference for the target language code, in case we've just switched from Google
     // to Bing, or Bing to Google.
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-      String currentLanguageCode = sharedPreferences.getString(KEY_TARGET_LANGUAGE_PREFERENCE,
-          CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE);
-    }
+    String currentLanguageCode = sharedPreferences.getString(KEY_TARGET_LANGUAGE_PREFERENCE,
+            CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE);
 
     String[] translators = getResources().getStringArray(R.array.translators);
-    String translator = null;
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-      translator = sharedPreferences.getString(KEY_TRANSLATOR, CaptureActivity.DEFAULT_TRANSLATOR);
-    }
+    String translator = sharedPreferences.getString(KEY_TRANSLATOR, CaptureActivity.DEFAULT_TRANSLATOR);
     String newLanguageCode = "";
     if (translator.equals(translators[0])) { // Bing
       // Update the list of available languages for the currently-chosen translation API.
@@ -201,7 +192,7 @@ public class PreferencesActivity extends PreferenceActivity implements
     }
 
     sharedPreferences.edit().putString(PreferencesActivity.KEY_TARGET_LANGUAGE_PREFERENCE,
-        newLanguageCode).commit();
+            newLanguageCode).commit();
   }
 
   /**
@@ -212,15 +203,9 @@ public class PreferencesActivity extends PreferenceActivity implements
   protected void onResume() {
     super.onResume();
     // Set up the initial summary values
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      listPreferenceTranslator.setSummary(sharedPreferences.getString(KEY_TRANSLATOR, CaptureActivity.DEFAULT_TRANSLATOR));
-    }
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      listPreferencePageSegmentationMode.setSummary(sharedPreferences.getString(KEY_PAGE_SEGMENTATION_MODE, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE));
-    }
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      listPreferenceOcrEngineMode.setSummary(sharedPreferences.getString(KEY_OCR_ENGINE_MODE, CaptureActivity.DEFAULT_OCR_ENGINE_MODE));
-    }
+    listPreferenceTranslator.setSummary(sharedPreferences.getString(KEY_TRANSLATOR, CaptureActivity.DEFAULT_TRANSLATOR));
+    listPreferencePageSegmentationMode.setSummary(sharedPreferences.getString(KEY_PAGE_SEGMENTATION_MODE, CaptureActivity.DEFAULT_PAGE_SEGMENTATION_MODE));
+    listPreferenceOcrEngineMode.setSummary(sharedPreferences.getString(KEY_OCR_ENGINE_MODE, CaptureActivity.DEFAULT_OCR_ENGINE_MODE));
     editTextPreferenceCharacterBlacklist.setSummary(sharedPreferences.getString(KEY_CHARACTER_BLACKLIST, OcrCharacterHelper.getDefaultBlacklist(listPreferenceSourceLanguage.getValue())));
     editTextPreferenceCharacterWhitelist.setSummary(sharedPreferences.getString(KEY_CHARACTER_WHITELIST, OcrCharacterHelper.getDefaultWhitelist(listPreferenceSourceLanguage.getValue())));
 

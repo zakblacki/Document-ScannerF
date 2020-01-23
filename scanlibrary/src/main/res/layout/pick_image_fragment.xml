@@ -20,7 +20,8 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:src="@drawable/gallery" />
+            android:src="@drawable/gallery"
+            android:contentDescription="@string/gallery_desc_scanlibrary" />
 
         <ImageButton
             android:id="@+id/cameraButton"
@@ -29,7 +30,8 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:src="@drawable/camera" />
+            android:src="@drawable/camera"
+            android:contentDescription="@string/camera_desc_scanlibrary" />
     </LinearLayout>
 
 </RelativeLayout>

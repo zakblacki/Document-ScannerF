@@ -19,7 +19,7 @@ public class ScanActivity extends Activity implements IScanner, ComponentCallbac
 
     public native Bitmap getScannedBitmap(Bitmap bitmap, float f, float f2, float f3, float f4, float f5, float f6, float f7, float f8);
 
-    /* access modifiers changed from: protected */
+    /* Access modifiers changed, original: protected */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scan_layout);
@@ -36,7 +36,7 @@ public class ScanActivity extends Activity implements IScanner, ComponentCallbac
         fragmentTransaction.commit();
     }
 
-    /* access modifiers changed from: protected */
+    /* Access modifiers changed, original: protected */
     public int getPreferenceContent() {
         return getIntent().getIntExtra(ScanConstants.OPEN_INTENT_PREFERENCE, 0);
     }
@@ -55,7 +55,7 @@ public class ScanActivity extends Activity implements IScanner, ComponentCallbac
     public void onScanFinish(Uri uri) {
         ResultFragment fragment = new ResultFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(ScanConstants.SCANNED_RESULT, uri);
+        bundle.putParcelable("scannedResult", uri);
         fragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.content, fragment);

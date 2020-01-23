@@ -8,13 +8,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-
 import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -33,7 +33,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.google.android.gms.vision.Frame;
@@ -48,7 +47,6 @@ import com.nabeeltech.capturedoc.copyright.AboutActivity;
 import com.nabeeltech.capturedoc.copyright.LicenseAgreementActivity;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -57,7 +55,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 
 
@@ -68,6 +65,8 @@ public class OCRActivity extends AppCompatActivity implements OnPageChangeListen
     private static final int STORAGE_REQUEST_CODE = 400;
     private static final int IMAGE_PICK_GALLERY_CODE = 1000;
     private static final int IMAGE_PICK_CAMERA_CODE = 1001;
+
+    private String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/myPdf/";
 
     String[] cameraPermission;
     String[] storagePermission;
@@ -82,7 +81,6 @@ public class OCRActivity extends AppCompatActivity implements OnPageChangeListen
 
     ImageView mPreviewIV;
     //PDFView mPerviewPdf;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +141,7 @@ public class OCRActivity extends AppCompatActivity implements OnPageChangeListen
             public void onClick(View v) {
                 mText = mResultEt.getText().toString().trim();
                 if (mText.isEmpty()) {
-                    Toast.makeText(OCRActivity.this, "Load Image First...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OCRActivity.this, "Load Image with text...", Toast.LENGTH_SHORT).show();
                 }   else{
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                         if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -217,7 +215,6 @@ public class OCRActivity extends AppCompatActivity implements OnPageChangeListen
                 return true;
         }
 
-
         int id = item.getItemId();
 
         if (id == R.id.action_share_ocr){
@@ -225,7 +222,7 @@ public class OCRActivity extends AppCompatActivity implements OnPageChangeListen
             Drawable myDrawable = mPreviewIV.getDrawable();
             if(myDrawable == null) {
 
-                Toast.makeText(OCRActivity.this, "Load Image First...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OCRActivity.this, "Load Image with text...", Toast.LENGTH_SHORT).show();
 
             } else {
                 Bitmap bitmap = ((BitmapDrawable) myDrawable).getBitmap();
@@ -474,7 +471,6 @@ public class OCRActivity extends AppCompatActivity implements OnPageChangeListen
                     pdfDocument.close();
 
 
-
                     if (!recognizer.isOperational()) {
                         Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
 
@@ -500,7 +496,6 @@ public class OCRActivity extends AppCompatActivity implements OnPageChangeListen
                 }
             }
         }
-
 
 
 
@@ -551,7 +546,6 @@ public class OCRActivity extends AppCompatActivity implements OnPageChangeListen
     }*/
 
 
-
     @Override
     public void onPageChanged(int page, int pageCount) {
 
@@ -561,4 +555,61 @@ public class OCRActivity extends AppCompatActivity implements OnPageChangeListen
     public void loadComplete(int nbPages) {
 
     }
+
+//    public void convertPdf(View view)
+//    {
+//        String file = directory + "2.jpg";
+//        Bitmap bitmap = BitmapFactory.decodeFile(file);
+//
+//        PdfDocument pdfDocument = new PdfDocument();
+//        PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(720, 1280, 1).create();
+//        PdfDocument.Page page = pdfDocument.startPage(myPageInfo);
+//        page.getCanvas().drawBitmap(bitmap, 0, 0, null);
+//        pdfDocument.finishPage(page);
+//
+//        String pdfFile = directory + "/myPdfFile.pdf";
+//        File myPdfFile = new File(pdfFile);
+//        try {
+//            pdfDocument.writeTo(new FileOutputStream(myPdfFile));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        pdfDocument.close();
+//    }
+
+//    public void convertPdf(View view)
+//    {
+//        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+//                Locale.getDefault()).format(System.currentTimeMillis());
+//
+//        File path = new File(getExternalFilesDir(null).getAbsolutePath());;
+//        //create folder named "My pdf file"
+//        File dir = new File( path + "/MyPdfFiles/");
+//        dir.mkdirs();
+//        //file name
+//
+////        String file = directory + "2.jpg";
+//        Bitmap bitmap = BitmapFactory.decodeFile(timestamp);
+//
+//        PdfDocument pdfDocument = new PdfDocument();
+//        PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(720, 1280, 1).create();
+//        PdfDocument.Page page = pdfDocument.startPage(myPageInfo);
+//        page.getCanvas().drawBitmap(bitmap, 0, 0, null);
+//        pdfDocument.finishPage(page);
+//
+//        String fileName = "MyFile_" + timestamp + ".pdf";
+//
+//        File file = new File (dir, fileName);
+//
+//
+//        try {
+//            pdfDocument.writeTo(new FileOutputStream(file));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        pdfDocument.close();
+//    }
+
+
+
 }

@@ -15,19 +15,21 @@
  */
 package mrz.reader;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.util.Log;
-
-import com.googlecode.tesseract.android.TessBaseAPI;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+
+import com.googlecode.tesseract.android.TessBaseAPI;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import mrz.reader.CaptureActivity;
 
 /**
  * Installs the language data required for OCR, and initializes the OCR engine using a background
@@ -178,17 +180,11 @@ final class OcrInitAsyncTask extends AsyncTask<String, String, Boolean> {
 
     if (result) {
       // Restart recognition
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        activity.resumeOCR();
-      }
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        activity.showLanguageName();
-      }
+      activity.resumeOCR();
+      activity.showLanguageName();
     } else {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        activity.showErrorMessage("Error", "Network is unreachable - cannot download language data. "
-                + "Please enable network access and restart this app.");
-      }
+      activity.showErrorMessage("Error", "Network is unreachable - cannot download language data. "
+              + "Please enable network access and restart this app.");
     }
   }
 

@@ -44,8 +44,8 @@
     <string name="www_capturedoc_com">www.capturedoc.com</string>
     <string name="logo_capture_desc">logo_capture_desc</string>
 
-    <string name="pref_header_camera_pref">Camera settings</string>
-    <string name="pref_header_image_processor">Image processor settings</string>
+    <string name="pref_header_camera_pref">Camera Settings</string>
+    <string name="pref_header_image_processor">Image Processor Settings</string>
     <string name="pref_header_about">About</string>
     <string name="pref_header_license">License Agreement</string>
 
@@ -105,9 +105,12 @@
     <string name="title_activity_capture">CaptureActivity</string>
     <string name="title_activity_preview">PreviewActivity</string>
     <string name="title_activity_process_image">ProcessImageActivity</string>
-    <string name="title_activity_about">AboutActivity</string>
-    <string name="title_activity_license_agreement">LicenseAgreementActivity</string>
-    <string name="title_activity_feedback">FeedbackActivity</string>
+    <string name="title_activity_about">About</string>
+    <string name="title_activity_license_agreement">License Agreement</string>
+    <string name="title_activity_feedback">Feedback</string>
+    <string name="title_activity_ocr">OCR</string>
+    <string name="title_activity_mrz">MRZ</string>
+    <string name="title_activity_edge">Scan Result</string>
 
     <string name="result_mrz">Result:</string>
     <string name="mrz">MRZ(BETA)</string>
@@ -128,6 +131,19 @@
     <string name="subject">Subject:</string>
     <string name="message">Message:</string>
     <string name="send">send</string>
+    <string name="scan">scan</string>
+    <string name="date_of_expiry">Date of Expiry :</string>
+    <string name="date_of_birth">Date of Birth :</string>
+    <string name="sex">Sex :</string>
+    <string name="country">Country :</string>
+    <string name="passport_no">Passport No :</string>
+    <string name="first_name">First Name :</string>
+    <string name="last_name">Last Name :</string>
+    <string name="document">Document :</string>
+    <string name="iconflash_desc">iconFlash_desc</string>
+    <string name="target_language">[Target language]</string>
+    <string name="translation">Translation</string>
+    <string name="image_view_desc">image_view_desc</string>
 
 
 </resources>

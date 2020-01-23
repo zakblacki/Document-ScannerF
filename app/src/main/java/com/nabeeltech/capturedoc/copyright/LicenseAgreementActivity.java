@@ -40,12 +40,13 @@ public class LicenseAgreementActivity extends AppCompatActivity {
                 "Your use of the Software constitutes your acceptance of the terms of \n" +
                 "this Agreement. Your use of the Software is also subject to the \n" +
                 "signed agreement between CaptureDoc and your employer or in the \n" +
-                "absence of a signed agreement, Capturedoc&rsquo;s standard license\n" +
+                "absence of a signed agreement, Capturedoc&rsquo;s standard license \n" +
                 "terms as made available at " +
 //                "</FONT><A HREF=\"https://www.capturedoc.com/\">" +
                 "       <FONT COLOR=\"blue\">" +
                 "           <FONT SIZE=2>" +
-                "               <U>www.capturedoc.com</U>" +
+//                "               <U>www.capturedoc.com</U>" +
+                "<a title=\"CaptureDoc\" href=\"https://capturedoc.com\">Capturedoc</a>\n" +
                 "           </FONT>" +
                 "       </FONT>" +
 

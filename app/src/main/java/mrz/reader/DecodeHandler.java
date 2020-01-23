@@ -17,13 +17,6 @@
 
 package mrz.reader;
 
-import android.graphics.Bitmap;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
-
 import com.googlecode.leptonica.android.Binarize;
 import com.googlecode.leptonica.android.Pix;
 import com.googlecode.leptonica.android.Pixa;
@@ -31,6 +24,18 @@ import com.googlecode.leptonica.android.ReadFile;
 import com.googlecode.leptonica.android.WriteFile;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.nabeeltech.capturedoc.R;
+
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
+
+import mrz.reader.CaptureActivity;
+import mrz.reader.OcrRecognizeAsyncTask;
+import mrz.reader.OcrResult;
+import mrz.reader.PlanarYUVLuminanceSource;
+import mrz.reader.ViewfinderView;
 
 /**
  * Class to send bitmap data for OCR.
@@ -41,16 +46,14 @@ final class DecodeHandler extends Handler {
 
   private final CaptureActivity activity;
   private boolean running = true;
-  private TessBaseAPI baseApi;
+  private final TessBaseAPI baseApi;
   private Bitmap bitmap;
   private static boolean isDecodePending;
   private long timeRequired;
 
   DecodeHandler(CaptureActivity activity) {
     this.activity = activity;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      baseApi = activity.getBaseApi();
-    }
+    baseApi = activity.getBaseApi();
   }
 
   @Override
@@ -59,20 +62,20 @@ final class DecodeHandler extends Handler {
       return;
     }
     switch (message.what) {
-    case R.id.ocr_continuous_decode:
-      // Only request a decode if a request is not already pending.
-      if (!isDecodePending) {
-        isDecodePending = true;
-        ocrContinuousDecode((byte[]) message.obj, message.arg1, message.arg2);
-      }
-      break;
-    case R.id.ocr_decode:
-      ocrDecode((byte[]) message.obj, message.arg1, message.arg2);
-      break;
-    case R.id.quit:
-      running = false;
-      Looper.myLooper().quit();
-      break;
+      case R.id.ocr_continuous_decode:
+        // Only request a decode if a request is not already pending.
+        if (!isDecodePending) {
+          isDecodePending = true;
+          ocrContinuousDecode((byte[]) message.obj, message.arg1, message.arg2);
+        }
+        break;
+      case R.id.ocr_decode:
+        ocrDecode((byte[]) message.obj, message.arg1, message.arg2);
+        break;
+      case R.id.quit:
+        running = false;
+        Looper.myLooper().quit();
+        break;
     }
   }
 
@@ -88,9 +91,7 @@ final class DecodeHandler extends Handler {
    * @param height Image height
    */
   private void ocrDecode(byte[] data, int width, int height) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      activity.displayProgressDialog();
-    }
+    activity.displayProgressDialog();
 
     // Launch OCR asynchronously, so we get the dialog box displayed immediately
     new OcrRecognizeAsyncTask(activity, baseApi, data, width, height).execute();
@@ -104,10 +105,7 @@ final class DecodeHandler extends Handler {
    * @param height Image height
    */
   private void ocrContinuousDecode(byte[] data, int width, int height) {
-    PlanarYUVLuminanceSource source = null;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      source = activity.getCameraManager().buildLuminanceSource(data, width, height);
-    }
+    PlanarYUVLuminanceSource source = activity.getCameraManager().buildLuminanceSource(data, width, height);
     if (source == null) {
       sendContinuousOcrFailMessage();
       return;
@@ -118,10 +116,7 @@ final class DecodeHandler extends Handler {
     bitmap = WriteFile.writeBitmap(thresholdedImage);
 
     OcrResult ocrResult = getOcrResult();
-    Handler handler = null;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      handler = activity.getHandler();
-    }
+    Handler handler = activity.getHandler();
     if (handler == null) {
       return;
     }
@@ -130,9 +125,7 @@ final class DecodeHandler extends Handler {
       try {
         sendContinuousOcrFailMessage();
       } catch (NullPointerException e) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-          activity.stopHandler();
-        }
+        activity.stopHandler();
       } finally {
         bitmap.recycle();
         baseApi.clear();
@@ -144,16 +137,14 @@ final class DecodeHandler extends Handler {
       Message message = Message.obtain(handler, R.id.ocr_continuous_decode_succeeded, ocrResult);
       message.sendToTarget();
     } catch (NullPointerException e) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        activity.stopHandler();
-      }
+      activity.stopHandler();
     } finally {
       baseApi.clear();
     }
   }
 
   @SuppressWarnings("unused")
-	private OcrResult getOcrResult() {
+  private OcrResult getOcrResult() {
     OcrResult ocrResult;
     String textResult;
     long start = System.currentTimeMillis();
@@ -201,9 +192,7 @@ final class DecodeHandler extends Handler {
       e.printStackTrace();
       try {
         baseApi.clear();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-          activity.stopHandler();
-        }
+        activity.stopHandler();
       } catch (NullPointerException e1) {
         // Continue
       }
@@ -217,10 +206,7 @@ final class DecodeHandler extends Handler {
   }
 
   private void sendContinuousOcrFailMessage() {
-    Handler handler = null;
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-      handler = activity.getHandler();
-    }
+    Handler handler = activity.getHandler();
     if (handler != null) {
       Message message = Message.obtain(handler, R.id.ocr_continuous_decode_failed, new OcrResultFailure(timeRequired));
       message.sendToTarget();

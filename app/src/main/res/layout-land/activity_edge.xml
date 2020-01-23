@@ -1,39 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ScanCallActivity">
-
-
-    <com.adityaarora.liveedgedetection.view.TouchImageView
-        android:id="@+id/scanned_image2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="center"
-        />
-
-    <Button
-        android:id="@+id/enhance_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:text="@string/enhance"
-        app:layout_constraintTop_toTopOf="parent" />
-
-<!--    <com.nabeeltech.capturedoc.QuadrilateralSelectionImageView-->
-<!--        android:id="@+id/polygonView2"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="1"/>-->
-
-<!--    <Button-->
-<!--        android:id="@+id/buttonScan"-->
-<!--        android:text="Scan"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content" />-->
-
-
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:dist="http://schemas.android.com/apk/distribution" xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:weightSum="1">
+    <FrameLayout android:id="@+id/container" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent"/>
+    <com.adityaarora.liveedgedetection.view.TouchImageView android:id="@+id/scanned_image2" android:layout_width="match_parent" android:layout_height="0dp" android:scaleType="center" android:layout_weight="0.92"/>
+    <Button android:id="@+id/enhance_image" android:layout_width="match_parent" android:layout_height="0dp" android:text="@string/enhance" android:layout_weight="0.08" app:layout_constraintTop_toTopOf="parent"/>
+</LinearLayout>

@@ -4,20 +4,19 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
 
-    defaultConfig {
+
+
+        defaultConfig {
         //needed for now
         multiDexEnabled true
         applicationId "com.nabeeltech.capturedoc"
         minSdkVersion 19
         targetSdkVersion 29
-//        versionCode 1
-//        versionName "1.0"
+        versionCode 1
+        versionName "1.0"
         //testing resconfig
         resConfigs "en"
 
-        ndk {
-            abiFilters 'arm64-v8a', 'armeabi', 'armeabi-v7a', 'mips', 'mips64', 'x86', 'x86_64'
-        }
 
     }
     buildTypes {
@@ -25,7 +24,8 @@ android {
             //testing minfyEnabled and Shrink
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //changed for now
+            proguardFiles 'proguard.cfg'
         }
 
     }
@@ -82,15 +82,14 @@ dependencies {
 
 
     //mrz
-    implementation group: 'org.slf4j', name: 'slf4j-android', version: '1.7.30'
     api 'com.otaliastudios:cameraview:2.2.0'
     implementation 'com.rmtheis:tess-two:9.0.0'
     implementation 'org.jmrtd:jmrtd:0.7.17'
 
     //test enhancement
-    implementation 'com.afollestad.material-dialogs:core:0.9.4.5'
+    //implementation 'com.afollestad.material-dialogs:core:0.9.4.5'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+//    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     //needed for now
     implementation 'com.android.support:multidex:1.0.3'

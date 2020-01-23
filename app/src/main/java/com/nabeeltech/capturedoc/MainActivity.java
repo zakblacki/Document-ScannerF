@@ -1,6 +1,7 @@
  package com.nabeeltech.capturedoc;
 
  import android.Manifest;
+ import android.annotation.SuppressLint;
  import android.app.Activity;
  import android.app.Dialog;
  import android.content.DialogInterface;
@@ -38,6 +39,7 @@
  import androidx.core.content.FileProvider;
  import androidx.drawerlayout.widget.DrawerLayout;
 
+ import com.adityaarora.liveedgedetection.view.TouchImageView;
  import com.google.android.material.floatingactionbutton.FloatingActionButton;
  import com.google.android.material.navigation.NavigationView;
  import com.karumi.dexter.Dexter;
@@ -72,31 +74,26 @@
 
  public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-     Uri image_uri;
 
 
-     String mText;
-
-     private static final int OPEN_THING = 99;
-
-
-     ImageView scannedImageView;
-
+     TouchImageView scannedImageView;
      DrawerLayout drawerLayout;
-     private ActionBarDrawerToggle drawerListener;
      Toolbar toolbar;
      NavigationView navigationView;
+     FloatingActionButton fab;
 
+
+     private ActionBarDrawerToggle drawerListener;
      private boolean mLimitExceeded = false;
-
-     private static final int PERMISSION_CODE = 1000;
-
      private static boolean splashLoaded = false;
-
 
      private static final int MY_CAMERA_REQUEST_CODE = 100;
      private static final String TAG = "MainActivity";
+     private static final int OPEN_THING = 99;
+     private static final int PERMISSION_CODE = 1000;
 
+     Uri image_uri;
+     String mText;
 
 
      @Override
@@ -104,50 +101,37 @@
          super.onCreate(savedInstanceState);
          setContentView(R.layout.activity_main);
 
-//         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                     requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
-//                 }
-//             }
-//         }
-
-
          //launch splash
          if (!splashLoaded) {
              new Handler().postDelayed(new Runnable() {
                  public void run() {
                     SplashScreen();
                  }
-             }, 10);
+             }, 0);
 
              splashLoaded = true;
          }
 
-
          //ask run time permissions for camera and read and write file
          checkPermissions();
-
-
-         navigationView = (NavigationView) findViewById(R.id.navigationView);
+         init();
+         setSupportActionBar(toolbar);
+         ActionBar actionBar = getSupportActionBar();
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
          navigationView.setNavigationItemSelectedListener(this);
 
-         toolbar = findViewById(R.id.toolbar);
-         setSupportActionBar(toolbar);
-         drawerLayout = findViewById(R.id.drawerLayout);
          drawerListener = new ActionBarDrawerToggle(this,drawerLayout,R.string.drawer_open,R.string.drawer_close);
          drawerLayout.addDrawerListener(drawerListener);
          drawerListener.syncState();
 
-         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+     }
 
-
-         ActionBar actionBar = getSupportActionBar();
-
+     public void init() {
+         navigationView = (NavigationView) findViewById(R.id.navigationView);
+         toolbar = findViewById(R.id.toolbar);
+         drawerLayout = findViewById(R.id.drawerLayout);
          scannedImageView = findViewById(R.id.scanned_image);
-
-
-         FloatingActionButton fab = findViewById(R.id.fab_capture);
+         fab = findViewById(R.id.fab_capture);
          fab.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -156,7 +140,20 @@
              }
          });
 
+     }
 
+     public void SplashScreen(){
+         new Splashy(this)
+                 .setLogo(R.drawable.splashy)
+                 .setTitle("CaptureDoc")
+                 .setSubTitle("Scan Document made easy")
+                 .setProgressColor(R.color.black)
+                 .setFullScreen(true)
+                 .setTitleColor(R.color.black)
+                 .showTitle(true)
+                 .showProgress(true)
+                 .setAnimation(Splashy.Animation.GLOW_LOGO_TITLE, 2500)
+                 .show();
      }
 
      //***********************************************open Gallery ***************************************************************
@@ -166,28 +163,29 @@
          int preference = ScanConstants.OPEN_MEDIA;
          Intent intent = new Intent(this, ScanActivity.class);
          intent.putExtra(ScanConstants.OPEN_INTENT_PREFERENCE, preference);
-         startActivityForResult(intent, REQUEST_CODE);
+         startActivityForResult(intent, OPEN_THING);
      }
 
      //***********************************************open camera ***************************************************************
      public void openCamera() {
 
-         int REQUEST_CODE = 99;
+//         int REQUEST_CODE = 99;
          int preference = ScanConstants.OPEN_CAMERA;
          Intent intent = new Intent(this, ScanActivity.class);
 
          intent.putExtra(ScanConstants.OPEN_INTENT_PREFERENCE, preference);
-         startActivityForResult(intent, REQUEST_CODE);
+         startActivityForResult(intent, OPEN_THING);
 
      }
 
      //***********************************************on activity result for camera and gallery ***************************************************************
+     @SuppressLint("RestrictedApi")
      @RequiresApi(api = Build.VERSION_CODES.Q)
      @Override
-     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+     public void onActivityResult(int requestCode, int resultCode, Intent data) {
          super.onActivityResult(requestCode, resultCode, data);
          if (resultCode == Activity.RESULT_OK && data != null) {
-             if (requestCode == 100) {
+             if (requestCode == OPEN_THING) {
                  Uri uri = data.getExtras().getParcelable(ScanConstants.SCANNED_RESULT);
                  Bitmap bitmap = null;
                  try {
@@ -208,6 +206,7 @@
                      Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                      intent.setData(Uri.fromFile(outFile));
                      sendBroadcast(intent);
+                     fab.hide();
 
                      try{
                          outputStream = new FileOutputStream(outFile);
@@ -496,39 +495,5 @@
 
          return true;
      }
-
-
-    public void SplashScreen(){
-         new Splashy(this)
-                 .setLogo(R.drawable.splashy)
-                 .setTitle("CaptureDoc")
-                 .setSubTitle("Scan Document made easy")
-                 .setProgressColor(R.color.black)
-                 .setFullScreen(true)
-                 .setTime(2500)
-                 .setTitleColor(R.color.black)
-                 .showTitle(true)
-                 .showProgress(true)
-                 .setAnimation(Splashy.Animation.GLOW_LOGO_TITLE, 2500)
-                 .show();
-     }
-
-//     @Override
-//     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//         if (requestCode == MY_CAMERA_REQUEST_CODE) {
-//             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                 Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
-//             } else {
-//                 Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
-//             }
-//         }
-//         if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-//             Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
-//             //resume tasks needing this permission
-//         }
-//
-//     }
-
 
  }

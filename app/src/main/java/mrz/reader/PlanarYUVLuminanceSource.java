@@ -18,6 +18,8 @@ package mrz.reader;
 
 import android.graphics.Bitmap;
 
+import mrz.reader.LuminanceSource;
+
 /**
  * This object extends LuminanceSource around an array of YUV data returned from the camera driver,
  * with the option to crop to a rectangle within the full data. This can be used to exclude
@@ -113,13 +115,13 @@ public final class PlanarYUVLuminanceSource extends LuminanceSource {
   @Override
   public LuminanceSource crop(int left, int top, int width, int height) {
     return new PlanarYUVLuminanceSource(yuvData,
-                                        dataWidth,
-                                        dataHeight,
-                                        this.left + left,
-                                        this.top + top,
-                                        width,
-                                        height,
-                                        false);
+            dataWidth,
+            dataHeight,
+            this.left + left,
+            this.top + top,
+            width,
+            height,
+            false);
   }
 
   public Bitmap renderCroppedGreyscaleBitmap() {

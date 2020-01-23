@@ -28,8 +28,14 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:weightSum="1"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
+        <FrameLayout
+            android:id="@+id/contain"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <include layout="@layout/toolbar_layout"/>
 
@@ -38,9 +44,10 @@
         <com.adityaarora.liveedgedetection.view.TouchImageView
             android:id="@+id/scanned_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:scaleType="center"
-            android:contentDescription="@string/desc_scan"
+            android:layout_weight="0.92"
+        android:contentDescription="@string/desc_scan"
             app:srcCompat="@drawable/ic_camera_alt_black_24dp" />
     </LinearLayout>
 

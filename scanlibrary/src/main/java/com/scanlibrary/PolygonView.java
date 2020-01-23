@@ -22,14 +22,12 @@ public class PolygonView extends FrameLayout {
     private ImageView midPointer13;
     private ImageView midPointer24;
     private ImageView midPointer34;
-    /* access modifiers changed from: private */
-    public Paint paint;
+    private Paint paint;
     private ImageView pointer1;
     private ImageView pointer2;
     private ImageView pointer3;
     private ImageView pointer4;
-    /* access modifiers changed from: private */
-    public PolygonView polygonView;
+    private PolygonView polygonView;
 
     private class MidPointTouchListenerImpl implements OnTouchListener {
         PointF DownPT = new PointF();
@@ -37,19 +35,19 @@ public class PolygonView extends FrameLayout {
         private ImageView mainPointer1;
         private ImageView mainPointer2;
 
-        public MidPointTouchListenerImpl(ImageView mainPointer12, ImageView mainPointer22) {
-            this.mainPointer1 = mainPointer12;
-            this.mainPointer2 = mainPointer22;
+        public MidPointTouchListenerImpl(ImageView mainPointer1, ImageView mainPointer2) {
+            this.mainPointer1 = mainPointer1;
+            this.mainPointer2 = mainPointer2;
         }
 
         public boolean onTouch(View v, MotionEvent event) {
-            int color;
             int eid = event.getAction();
             if (eid == 0) {
                 this.DownPT.x = event.getX();
                 this.DownPT.y = event.getY();
                 this.StartPT = new PointF(v.getX(), v.getY());
             } else if (eid == 1) {
+                int color;
                 PolygonView polygonView = PolygonView.this;
                 if (polygonView.isValidShape(polygonView.getPoints())) {
                     color = PolygonView.this.getResources().getColor(R.color.blue);
@@ -59,31 +57,32 @@ public class PolygonView extends FrameLayout {
                 PolygonView.this.paint.setColor(color);
             } else if (eid == 2) {
                 PointF mv = new PointF(event.getX() - this.DownPT.x, event.getY() - this.DownPT.y);
+                ImageView imageView;
                 if (Math.abs(this.mainPointer1.getX() - this.mainPointer2.getX()) > Math.abs(this.mainPointer1.getY() - this.mainPointer2.getY())) {
-                    if (this.mainPointer2.getY() + mv.y + ((float) v.getHeight()) < ((float) PolygonView.this.polygonView.getHeight()) && this.mainPointer2.getY() + mv.y > 0.0f) {
+                    if ((this.mainPointer2.getY() + mv.y) + ((float) v.getHeight()) < ((float) PolygonView.this.polygonView.getHeight()) && this.mainPointer2.getY() + mv.y > 0.0f) {
                         v.setX((float) ((int) (this.StartPT.y + mv.y)));
                         this.StartPT = new PointF(v.getX(), v.getY());
-                        ImageView imageView = this.mainPointer2;
+                        imageView = this.mainPointer2;
                         imageView.setY((float) ((int) (imageView.getY() + mv.y)));
                     }
-                    if (this.mainPointer1.getY() + mv.y + ((float) v.getHeight()) < ((float) PolygonView.this.polygonView.getHeight()) && this.mainPointer1.getY() + mv.y > 0.0f) {
+                    if ((this.mainPointer1.getY() + mv.y) + ((float) v.getHeight()) < ((float) PolygonView.this.polygonView.getHeight()) && this.mainPointer1.getY() + mv.y > 0.0f) {
                         v.setX((float) ((int) (this.StartPT.y + mv.y)));
                         this.StartPT = new PointF(v.getX(), v.getY());
-                        ImageView imageView2 = this.mainPointer1;
-                        imageView2.setY((float) ((int) (imageView2.getY() + mv.y)));
+                        imageView = this.mainPointer1;
+                        imageView.setY((float) ((int) (imageView.getY() + mv.y)));
                     }
                 } else {
-                    if (this.mainPointer2.getX() + mv.x + ((float) v.getWidth()) < ((float) PolygonView.this.polygonView.getWidth()) && this.mainPointer2.getX() + mv.x > 0.0f) {
+                    if ((this.mainPointer2.getX() + mv.x) + ((float) v.getWidth()) < ((float) PolygonView.this.polygonView.getWidth()) && this.mainPointer2.getX() + mv.x > 0.0f) {
                         v.setX((float) ((int) (this.StartPT.x + mv.x)));
                         this.StartPT = new PointF(v.getX(), v.getY());
-                        ImageView imageView3 = this.mainPointer2;
-                        imageView3.setX((float) ((int) (imageView3.getX() + mv.x)));
+                        imageView = this.mainPointer2;
+                        imageView.setX((float) ((int) (imageView.getX() + mv.x)));
                     }
-                    if (this.mainPointer1.getX() + mv.x + ((float) v.getWidth()) < ((float) PolygonView.this.polygonView.getWidth()) && this.mainPointer1.getX() + mv.x > 0.0f) {
+                    if ((this.mainPointer1.getX() + mv.x) + ((float) v.getWidth()) < ((float) PolygonView.this.polygonView.getWidth()) && this.mainPointer1.getX() + mv.x > 0.0f) {
                         v.setX((float) ((int) (this.StartPT.x + mv.x)));
                         this.StartPT = new PointF(v.getX(), v.getY());
-                        ImageView imageView4 = this.mainPointer1;
-                        imageView4.setX((float) ((int) (imageView4.getX() + mv.x)));
+                        imageView = this.mainPointer1;
+                        imageView.setX((float) ((int) (imageView.getX() + mv.x)));
                     }
                 }
             }
@@ -102,13 +101,13 @@ public class PolygonView extends FrameLayout {
         }
 
         public boolean onTouch(View v, MotionEvent event) {
-            int color;
             int eid = event.getAction();
             if (eid == 0) {
                 this.DownPT.x = event.getX();
                 this.DownPT.y = event.getY();
                 this.StartPT = new PointF(v.getX(), v.getY());
             } else if (eid == 1) {
+                int color;
                 PolygonView polygonView = PolygonView.this;
                 if (polygonView.isValidShape(polygonView.getPoints())) {
                     color = PolygonView.this.getResources().getColor(R.color.blue);
@@ -118,7 +117,7 @@ public class PolygonView extends FrameLayout {
                 PolygonView.this.paint.setColor(color);
             } else if (eid == 2) {
                 PointF mv = new PointF(event.getX() - this.DownPT.x, event.getY() - this.DownPT.y);
-                if (this.StartPT.x + mv.x + ((float) v.getWidth()) < ((float) PolygonView.this.polygonView.getWidth()) && this.StartPT.y + mv.y + ((float) v.getHeight()) < ((float) PolygonView.this.polygonView.getHeight()) && this.StartPT.x + mv.x > 0.0f && this.StartPT.y + mv.y > 0.0f) {
+                if ((this.StartPT.x + mv.x) + ((float) v.getWidth()) < ((float) PolygonView.this.polygonView.getWidth()) && (this.StartPT.y + mv.y) + ((float) v.getHeight()) < ((float) PolygonView.this.polygonView.getHeight()) && this.StartPT.x + mv.x > 0.0f && this.StartPT.y + mv.y > 0.0f) {
                     v.setX((float) ((int) (this.StartPT.x + mv.x)));
                     v.setY((float) ((int) (this.StartPT.y + mv.y)));
                     this.StartPT = new PointF(v.getX(), v.getY());
@@ -129,21 +128,21 @@ public class PolygonView extends FrameLayout {
         }
     }
 
-    public PolygonView(Context context2) {
-        super(context2);
-        this.context = context2;
+    public PolygonView(Context context) {
+        super(context);
+        this.context = context;
         init();
     }
 
-    public PolygonView(Context context2, AttributeSet attrs) {
-        super(context2, attrs);
-        this.context = context2;
+    public PolygonView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        this.context = context;
         init();
     }
 
-    public PolygonView(Context context2, AttributeSet attrs, int defStyleAttr) {
-        super(context2, attrs, defStyleAttr);
-        this.context = context2;
+    public PolygonView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        this.context = context;
         init();
     }
 
@@ -172,7 +171,7 @@ public class PolygonView extends FrameLayout {
         initPaint();
     }
 
-    /* access modifiers changed from: protected */
+    /* Access modifiers changed, original: protected */
     public void attachViewToParent(View child, int index, LayoutParams params) {
         super.attachViewToParent(child, index, params);
     }
@@ -185,7 +184,7 @@ public class PolygonView extends FrameLayout {
     }
 
     public Map<Integer, PointF> getPoints() {
-        List<PointF> points = new ArrayList<>();
+        List<PointF> points = new ArrayList();
         points.add(new PointF(this.pointer1.getX(), this.pointer1.getY()));
         points.add(new PointF(this.pointer2.getX(), this.pointer2.getY()));
         points.add(new PointF(this.pointer3.getX(), this.pointer3.getY()));
@@ -200,7 +199,7 @@ public class PolygonView extends FrameLayout {
             centerPoint.x += pointF.x / ((float) size);
             centerPoint.y += pointF.y / ((float) size);
         }
-        Map<Integer, PointF> orderedPoints = new HashMap<>();
+        Map<Integer, PointF> orderedPoints = new HashMap();
         for (PointF pointF2 : points) {
             int index = -1;
             if (pointF2.x < centerPoint.x && pointF2.y < centerPoint.y) {
@@ -228,21 +227,21 @@ public class PolygonView extends FrameLayout {
         Integer valueOf = Integer.valueOf(0);
         imageView.setX(((PointF) pointFMap.get(valueOf)).x);
         this.pointer1.setY(((PointF) pointFMap.get(valueOf)).y);
-        ImageView imageView2 = this.pointer2;
-        Integer valueOf2 = Integer.valueOf(1);
-        imageView2.setX(((PointF) pointFMap.get(valueOf2)).x);
-        this.pointer2.setY(((PointF) pointFMap.get(valueOf2)).y);
-        ImageView imageView3 = this.pointer3;
-        Integer valueOf3 = Integer.valueOf(2);
-        imageView3.setX(((PointF) pointFMap.get(valueOf3)).x);
-        this.pointer3.setY(((PointF) pointFMap.get(valueOf3)).y);
-        ImageView imageView4 = this.pointer4;
-        Integer valueOf4 = Integer.valueOf(3);
-        imageView4.setX(((PointF) pointFMap.get(valueOf4)).x);
-        this.pointer4.setY(((PointF) pointFMap.get(valueOf4)).y);
+        imageView = this.pointer2;
+        valueOf = Integer.valueOf(1);
+        imageView.setX(((PointF) pointFMap.get(valueOf)).x);
+        this.pointer2.setY(((PointF) pointFMap.get(valueOf)).y);
+        imageView = this.pointer3;
+        valueOf = Integer.valueOf(2);
+        imageView.setX(((PointF) pointFMap.get(valueOf)).x);
+        this.pointer3.setY(((PointF) pointFMap.get(valueOf)).y);
+        imageView = this.pointer4;
+        valueOf = Integer.valueOf(3);
+        imageView.setX(((PointF) pointFMap.get(valueOf)).x);
+        this.pointer4.setY(((PointF) pointFMap.get(valueOf)).y);
     }
 
-    /* access modifiers changed from: protected */
+    /* Access modifiers changed, original: protected */
     public void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
         Canvas canvas2 = canvas;

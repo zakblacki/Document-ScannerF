@@ -28,15 +28,22 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 import android.text.ClipboardManager;
 import android.text.SpannableStringBuilder;
 import android.text.style.CharacterStyle;
@@ -55,33 +62,36 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import android.widget.ToggleButton;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
+import mrz.reader.camera.CameraManager;
+import mrz.reader.camera.ShutterButton;
 import com.nabeeltech.capturedoc.R;
+import com.otaliastudios.cameraview.controls.Flash;
 
 import org.jmrtd.lds.icao.MRZInfo;
 
 import java.io.File;
 import java.io.IOException;
 
-import mrz.reader.camera.CameraManager;
-import mrz.reader.camera.ShutterButton;
+import mrz.reader.CaptureActivityHandler;
+import mrz.reader.FinishListener;
+import mrz.reader.OcrResult;
+import mrz.reader.ViewfinderView;
 
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a
- * viewfinder to help_mrz the user place the text correctly, shows feedback as the image processing
+ * viewfinder to help the user place the text correctly, shows feedback as the image processing
  * is happening, and then overlays the results when a scan is successful.
  * <p>
  * The code for this class was adapted from the ZXing project: http://code.google.com/p/zxing/
  */
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public final class CaptureActivity extends Activity implements SurfaceHolder.Callback,
         ShutterButton.OnShutterButtonListener {
 
@@ -170,7 +180,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
      */
     static final String[] CUBE_SUPPORTED_LANGUAGES = {
             "ara", // Arabic
-            "hin" // Hindi
+            "hin", // Hindi
+            "en"
     };
 
     static final public String MRZ_RESULT = "MRZ_RESULT";
@@ -202,7 +213,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private TextView statusViewTop;
     private TextView ocrResultView;
     private TextView translationView;
-    //private FrameLayout flashBt;
+    private FrameLayout flashBt;
 
     private View cameraButtonView;
     private View resultView;
@@ -230,13 +241,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private boolean isEngineReady;
     private boolean isPaused;
     private static boolean isFirstLaunch; // True if this is the first time the app is being run
-    //private static boolean isFlash; // True if this is the first time the app is being run
+    private static boolean isFlash; // True if this is the first time the app is being run
     private ImageView iconFliash;
-
-//    ImageView switchOff;
-//    private static final int CAMERA_REQUEST = 50;
-//    private boolean flashLightStatus = false;
-
 
     Handler getHandler() {
         return handler;
@@ -255,34 +261,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-
-
-//        switchOff = findViewById(R.id.imageFlashlight);
-//        final boolean hasCameraFlash =
-//                getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-//        boolean isEnabled = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-//                == PackageManager.PERMISSION_GRANTED;
-//        switchOff.setEnabled(isEnabled);
-//
-//        ActivityCompat.requestPermissions(CaptureActivity.this, new String[]
-//                {Manifest.permission.CAMERA}, CAMERA_REQUEST);
-//
-//        switchOff.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if(hasCameraFlash){
-//                    if(flashLightStatus)
-//                        flashLightOff();
-//                    else
-//                        flashLightOn();
-//                }else{
-//                    Toast.makeText(CaptureActivity.this, "No flash Available", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-
-
 
         checkFirstLaunch();
 
@@ -310,9 +288,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         // Camera shutter button
         if (DISPLAY_SHUTTER_BUTTON) {
-//            flashBt = findViewById(R.id.flashBt);
-//            iconFliash = findViewById(R.id.iconFlash);
-//            flashBt.setBackground(ContextCompat.getDrawable(CaptureActivity.this, R.drawable.toggle_flash_click));
+            flashBt = findViewById(R.id.flashBt);
+            iconFliash = findViewById(R.id.iconFlash);
+            flashBt.setBackground(ContextCompat.getDrawable(CaptureActivity.this, R.drawable.toggle_flash_click));
 //            iconFliash.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_flash_off)));
 //            flashBt.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -458,12 +436,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                     finish();
                 }
             }
-//            case CAMERA_REQUEST:
-//                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-//                    switchOff.setEnabled(true);
-//                }else {
-//                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-//                }break;
         }
     }
 
@@ -560,9 +532,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         setStatusViewForContinuous();
         DecodeHandler.resetDecodeState();
         handler.resetState();
-//        if (flashBt != null && DISPLAY_SHUTTER_BUTTON) {
-//            flashBt.setVisibility(View.VISIBLE);
-//        }
+        if (flashBt != null && DISPLAY_SHUTTER_BUTTON) {
+            flashBt.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -816,8 +788,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             return false;
         }
 
-        // Turn off activiy_capture_mrz-related UI elements
-//        flashBt.setVisibility(View.GONE);
+        // Turn off capture-related UI elements
+        flashBt.setVisibility(View.GONE);
         statusViewBottom.setVisibility(View.GONE);
         statusViewTop.setVisibility(View.GONE);
         cameraButtonView.setVisibility(View.GONE);
@@ -1017,9 +989,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 }
                 return true;
             case OPTIONS_SHARE_RECOGNIZED_TEXT_ID:
-                Intent shareRecognizedTextIntent = new Intent(Intent.ACTION_SEND);
+                Intent shareRecognizedTextIntent = new Intent(android.content.Intent.ACTION_SEND);
                 shareRecognizedTextIntent.setType("text/plain");
-                shareRecognizedTextIntent.putExtra(Intent.EXTRA_TEXT, ocrResultView.getText());
+                shareRecognizedTextIntent.putExtra(android.content.Intent.EXTRA_TEXT, ocrResultView.getText());
                 startActivity(Intent.createChooser(shareRecognizedTextIntent, "Share via"));
                 return true;
             case OPTIONS_COPY_TRANSLATED_TEXT_ID:
@@ -1031,9 +1003,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 }
                 return true;
             case OPTIONS_SHARE_TRANSLATED_TEXT_ID:
-                Intent shareTranslatedTextIntent = new Intent(Intent.ACTION_SEND);
+                Intent shareTranslatedTextIntent = new Intent(android.content.Intent.ACTION_SEND);
                 shareTranslatedTextIntent.setType("text/plain");
-                shareTranslatedTextIntent.putExtra(Intent.EXTRA_TEXT, translationView.getText());
+                shareTranslatedTextIntent.putExtra(android.content.Intent.EXTRA_TEXT, translationView.getText());
                 startActivity(Intent.createChooser(shareTranslatedTextIntent, "Share via"));
                 return true;
             default:
@@ -1060,7 +1032,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         viewfinderView.setVisibility(View.VISIBLE);
         cameraButtonView.setVisibility(View.VISIBLE);
         if (DISPLAY_SHUTTER_BUTTON) {
-//            flashBt.setVisibility(View.VISIBLE);
+            flashBt.setVisibility(View.VISIBLE);
         }
         lastResult = null;
         viewfinderView.removeResultText();
@@ -1088,11 +1060,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     @SuppressWarnings("unused")
     void setButtonVisibility(boolean visible) {
-//        if (flashBt != null && visible && DISPLAY_SHUTTER_BUTTON) {
-//            flashBt.setVisibility(View.VISIBLE);
-//        } else if (flashBt != null) {
-//            flashBt.setVisibility(View.GONE);
-//        }
+        if (flashBt != null && visible && DISPLAY_SHUTTER_BUTTON) {
+            flashBt.setVisibility(View.VISIBLE);
+        } else if (flashBt != null) {
+            flashBt.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -1101,7 +1073,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
      * @param clickable True if the button should accept a click
      */
     void setShutterButtonClickable(boolean clickable) {
-//        flashBt.setClickable(clickable);
+        flashBt.setClickable(clickable);
     }
 
     /**
@@ -1143,7 +1115,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     }
 
     /**
-     * We want the help_mrz screen to be shown automatically the first time a new version of the app is
+     * We want the help screen to be shown automatically the first time a new version of the app is
      * run. The easiest way to do this is to check android:versionCode from the manifest, and compare
      * it to a value stored as a preference.
      */
@@ -1199,7 +1171,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         setTargetLanguage(prefs.getString(PreferencesActivity.KEY_TARGET_LANGUAGE_PREFERENCE, CaptureActivity.DEFAULT_TARGET_LANGUAGE_CODE));
         isTranslationActive = prefs.getBoolean(PreferencesActivity.KEY_TOGGLE_TRANSLATION, false);
 
-        // Retrieve from preferences, and set in this Activity, the activiy_capture_mrz mode preference
+        // Retrieve from preferences, and set in this Activity, the capture mode preference
         isContinuousModeActive = prefs.getBoolean(PreferencesActivity.KEY_CONTINUOUS_PREVIEW, CaptureActivity.DEFAULT_TOGGLE_CONTINUOUS);
 
         // Retrieve from preferences, and set in this Activity, the page segmentation mode preference
@@ -1327,39 +1299,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 .show();
     }
 
-//    private void flashLightOn(){
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            android.hardware.camera2.CameraManager cameraManager = (android.hardware.camera2.CameraManager)
-//                    getSystemService(Context.CAMERA_SERVICE);
-//            try {
-//                String cameraId = cameraManager.getCameraIdList()[0];
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                    cameraManager.setTorchMode(cameraId, true);
-//                }
-//                flashLightStatus = true;
-//                switchOff.setImageResource(R.drawable.ic_flash_on_black_24dp);
-//            } catch (CameraAccessException e) {
-//
-//            }
-//        }
-//    }
-//
-//    private void flashLightOff(){
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            android.hardware.camera2.CameraManager cameraManager = (android.hardware.camera2.CameraManager)
-//                    getSystemService(Context.CAMERA_SERVICE);
-//            try {
-//                String cameraId = cameraManager.getCameraIdList()[0];
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                    cameraManager.setTorchMode(cameraId, false);
-//                }
-//                flashLightStatus = false;
-//                switchOff.setImageResource(R.drawable.ic_flash_off_black_24dp);
-//            } catch (CameraAccessException e) {
-//
-//            }
-//        }
-//    }
 
 
 }

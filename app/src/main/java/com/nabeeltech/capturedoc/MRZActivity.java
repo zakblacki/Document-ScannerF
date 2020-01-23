@@ -4,9 +4,15 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.nabeeltech.capturedoc.R;
 
 import org.jmrtd.lds.icao.MRZInfo;
 
@@ -19,10 +25,9 @@ import mrz.reader.CaptureActivity;
 
 import static mrz.reader.CaptureActivity.MRZ_RESULT;
 
+public class MRZActivity extends AppCompatActivity {
 
-public class MRZActivity extends Activity {
-
-    private Button btnScan;
+    Button btnScan;
     private TextView tvMRZ;
     private TextView tvDoc;
     private TextView tvLast;
@@ -33,10 +38,15 @@ public class MRZActivity extends Activity {
     private TextView tvDOB;
     private TextView tvDOE;
 
-
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mrz);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+
         init();
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,8 +56,6 @@ public class MRZActivity extends Activity {
                 startActivityForResult(intent, 100);
             }
         });
-
-
     }
 
     private void clear() {
@@ -79,11 +87,10 @@ public class MRZActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            MRZInfo mrzInfo = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                mrzInfo = new MRZInfo(data.getStringExtra(MRZ_RESULT));
-            }
+            MRZInfo mrzInfo = new MRZInfo(data.getStringExtra(MRZ_RESULT));
             updateResult(mrzInfo);
+            btnScan.setVisibility(View.GONE);
+
         }
     }
 
@@ -110,5 +117,16 @@ public class MRZActivity extends Activity {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

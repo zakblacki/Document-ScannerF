@@ -16,24 +16,24 @@
  */
 package mrz.reader;
 
+import java.util.List;
+
+import mrz.reader.camera.CameraManager;
+import com.nabeeltech.capturedoc.R;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.graphics.Paint.Style;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.View;
 
-
-import com.nabeeltech.capturedoc.R;
-
-import java.util.List;
-
-import mrz.reader.camera.CameraManager;
+import mrz.reader.OcrResultText;
 
 /**
  * This view is overlaid on top of the camera preview. It adds the viewfinder rectangle and partial
@@ -142,9 +142,9 @@ public final class ViewfinderView extends View {
             paint.setStrokeWidth(1);
             rect = regionBoundingBoxes.get(i);
             canvas.drawRect(frame.left + rect.left * scaleX,
-                frame.top + rect.top * scaleY,
-                frame.left + rect.right * scaleX,
-                frame.top + rect.bottom * scaleY, paint);
+                    frame.top + rect.top * scaleY,
+                    frame.left + rect.right * scaleX,
+                    frame.top + rect.bottom * scaleY, paint);
           }
         }
 
@@ -158,9 +158,9 @@ public final class ViewfinderView extends View {
           for (int i = 0; i < textlineBoundingBoxes.size(); i++) {
             rect = textlineBoundingBoxes.get(i);
             canvas.drawRect(frame.left + rect.left * scaleX,
-                frame.top + rect.top * scaleY,
-                frame.left + rect.right * scaleX,
-                frame.top + rect.bottom * scaleY, paint);
+                    frame.top + rect.top * scaleY,
+                    frame.left + rect.right * scaleX,
+                    frame.top + rect.bottom * scaleY, paint);
           }
         }
 
@@ -173,9 +173,9 @@ public final class ViewfinderView extends View {
           for (int i = 0; i < stripBoundingBoxes.size(); i++) {
             rect = stripBoundingBoxes.get(i);
             canvas.drawRect(frame.left + rect.left * scaleX,
-                frame.top + rect.top * scaleY,
-                frame.left + rect.right * scaleX,
-                frame.top + rect.bottom * scaleY, paint);
+                    frame.top + rect.top * scaleY,
+                    frame.left + rect.right * scaleX,
+                    frame.top + rect.bottom * scaleY, paint);
           }
         }
 
@@ -198,10 +198,10 @@ public final class ViewfinderView extends View {
             // Draw a bounding box around the word
             rect = wordBoundingBoxes.get(i);
             canvas.drawRect(
-                frame.left + rect.left * scaleX,
-                frame.top + rect.top * scaleY,
-                frame.left + rect.right * scaleX,
-                frame.top + rect.bottom * scaleY, paint);
+                    frame.left + rect.left * scaleX,
+                    frame.top + rect.top * scaleY,
+                    frame.left + rect.right * scaleX,
+                    frame.top + rect.bottom * scaleY, paint);
           }
         }
 
@@ -231,9 +231,9 @@ public final class ViewfinderView extends View {
                 paint.setAlpha(255);
               }
               canvas.drawRect(frame.left + rect.left * scaleX,
-                  frame.top + rect.top * scaleY,
-                  frame.left + rect.right * scaleX,
-                  frame.top + rect.bottom * scaleY, paint);
+                      frame.top + rect.top * scaleY,
+                      frame.left + rect.right * scaleX,
+                      frame.top + rect.bottom * scaleY, paint);
 
               // Draw the word in black text
               paint.setColor(Color.BLACK);

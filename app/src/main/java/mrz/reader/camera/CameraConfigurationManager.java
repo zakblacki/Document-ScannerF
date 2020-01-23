@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -91,7 +92,7 @@ final class CameraConfigurationManager {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-//        initializeTorch(parameters, prefs);
+        initializeTorch(parameters, prefs);
         String focusMode = null;
         if (prefs.getBoolean(PreferencesActivity.KEY_AUTO_FOCUS, true)) {
             if (prefs.getBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, false)) {
@@ -126,38 +127,38 @@ final class CameraConfigurationManager {
         return screenResolution;
     }
 
-//    void setTorch(Camera camera, boolean newSetting) {
-//        Camera.Parameters parameters = camera.getParameters();
-//        doSetTorch(parameters, newSetting);
-//        camera.setParameters(parameters);
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-//        boolean currentSetting = prefs.getBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, false);
-//        if (currentSetting != newSetting) {
-//            SharedPreferences.Editor editor = prefs.edit();
-//            editor.putBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, newSetting);
-//            editor.commit();
-//        }
-//    }
+    void setTorch(Camera camera, boolean newSetting) {
+        Camera.Parameters parameters = camera.getParameters();
+        doSetTorch(parameters, newSetting);
+        camera.setParameters(parameters);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean currentSetting = prefs.getBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, false);
+        if (currentSetting != newSetting) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, newSetting);
+            editor.commit();
+        }
+    }
 
-//    private static void initializeTorch(Camera.Parameters parameters, SharedPreferences prefs) {
-//        boolean currentSetting = prefs.getBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, false);
-//        doSetTorch(parameters, currentSetting);
-//    }
+    private static void initializeTorch(Camera.Parameters parameters, SharedPreferences prefs) {
+        boolean currentSetting = prefs.getBoolean(PreferencesActivity.KEY_TOGGLE_LIGHT, false);
+        doSetTorch(parameters, currentSetting);
+    }
 
-//    private static void doSetTorch(Camera.Parameters parameters, boolean newSetting) {
-//        String flashMode;
-//        if (newSetting) {
-//            flashMode = findSettableValue(parameters.getSupportedFlashModes(),
-//                    Camera.Parameters.FLASH_MODE_TORCH,
-//                    Camera.Parameters.FLASH_MODE_ON);
-//        } else {
-//            flashMode = findSettableValue(parameters.getSupportedFlashModes(),
-//                    Camera.Parameters.FLASH_MODE_OFF);
-//        }
-//        if (flashMode != null) {
-//            parameters.setFlashMode(flashMode);
-//        }
-//    }
+    private static void doSetTorch(Camera.Parameters parameters, boolean newSetting) {
+        String flashMode;
+        if (newSetting) {
+            flashMode = findSettableValue(parameters.getSupportedFlashModes(),
+                    Camera.Parameters.FLASH_MODE_TORCH,
+                    Camera.Parameters.FLASH_MODE_ON);
+        } else {
+            flashMode = findSettableValue(parameters.getSupportedFlashModes(),
+                    Camera.Parameters.FLASH_MODE_OFF);
+        }
+        if (flashMode != null) {
+            parameters.setFlashMode(flashMode);
+        }
+    }
 
     private Point findBestPreviewSizeValue(Camera.Parameters parameters, Point screenResolution) {
 

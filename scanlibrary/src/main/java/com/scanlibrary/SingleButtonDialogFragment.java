@@ -15,11 +15,11 @@ public class SingleButtonDialogFragment extends DialogFragment {
     protected int positiveButtonTitle;
     protected String title;
 
-    public SingleButtonDialogFragment(int positiveButtonTitle2, String message2, String title2, boolean isCancelable2) {
-        this.positiveButtonTitle = positiveButtonTitle2;
-        this.message = message2;
-        this.title = title2;
-        this.isCancelable = isCancelable2;
+    public SingleButtonDialogFragment(int positiveButtonTitle, String message, String title, boolean isCancelable) {
+        this.positiveButtonTitle = positiveButtonTitle;
+        this.message = message;
+        this.title = title;
+        this.isCancelable = isCancelable;
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {

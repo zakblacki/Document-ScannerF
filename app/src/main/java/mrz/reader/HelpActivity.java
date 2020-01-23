@@ -33,7 +33,6 @@ import android.widget.Button;
 
 import com.nabeeltech.capturedoc.R;
 
-
 /**
  * Activity to display informational pages to the user in a WebView.
  *
@@ -119,7 +118,7 @@ public final class HelpActivity extends Activity {
   private final class HelpClient extends WebViewClient {
     Activity context;
     public HelpClient(Activity context){
-        this.context = context;
+      this.context = context;
     }
 
     @Override
@@ -134,27 +133,27 @@ public final class HelpActivity extends Activity {
         return false;
       } else if (url.startsWith("mailto:")) {
         try {
-              MailTo mt = MailTo.parse(url);
-              Intent i = new Intent(Intent.ACTION_SEND);
-              i.setType("message/rfc822");
-              i.putExtra(Intent.EXTRA_EMAIL, new String[]{mt.getTo()});
-              i.putExtra(Intent.EXTRA_SUBJECT, mt.getSubject());
-              context.startActivity(i);
-              view.reload();
+          MailTo mt = MailTo.parse(url);
+          Intent i = new Intent(Intent.ACTION_SEND);
+          i.setType("message/rfc822");
+          i.putExtra(Intent.EXTRA_EMAIL, new String[]{mt.getTo()});
+          i.putExtra(Intent.EXTRA_SUBJECT, mt.getSubject());
+          context.startActivity(i);
+          view.reload();
         }
         catch (ActivityNotFoundException e) {
           Log.w(TAG, "Problem with Intent.ACTION_SEND", e);
-                  new AlertDialog.Builder(context)
-                    .setTitle("Contact Info")
-                    .setMessage( "Please send your feedback to: app.ocr@gmail.com" )
-                    .setPositiveButton( "Done", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Log.d("AlertDialog", "Positive");
-                        }
-                    })
-                    .show();
+          new AlertDialog.Builder(context)
+                  .setTitle("Contact Info")
+                  .setMessage( "Please send your feedback to: app.ocr@gmail.com" )
+                  .setPositiveButton( "Done", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                      Log.d("AlertDialog", "Positive");
+                    }
+                  })
+                  .show();
         }
-            return true;
+        return true;
       } else {
         // Open external URLs in Browser.
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));

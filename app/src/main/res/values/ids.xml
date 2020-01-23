@@ -26,7 +26,7 @@
   <item type="id" name="ocr_decode"/>
   <item type="id" name="ocr_decode_failed"/>
   <item type="id" name="ocr_decode_succeeded"/>
-  
+
   <item type="id" name="quit"/>
   <item type="id" name="restart_preview"/>
 </resources>
